@@ -161,8 +161,6 @@ export default {
         mobile: inputPhoneValue
       })
 
-      console.log(res)
-
       if (res.code === 0) {
         this.showFail = true
       } else {
@@ -176,13 +174,12 @@ export default {
       this.ReceiveType = res
     },
 
-    async getRedpacks() {
-      const res = await this.$api.redPacks({
-        id: this.id,
-        mobile: this.inputPhoneValue
-      })
-      console.log(res)
-    },
+    // async getRedpacks() {
+    //   const res = await this.$api.redPacks({
+    //     id: this.id,
+    //     mobile: this.inputPhoneValue
+    //   })
+    // },
 
     async checkUserMobile() {
       const mobile = this.userInfo.mobile
