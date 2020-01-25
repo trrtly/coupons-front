@@ -46,16 +46,17 @@ export default {
         localStorage.setItem('token', res.token)
         localStorage.setItem('expiresAt', res.expiresAt)
         this.defaultProcess()
-      } else {
-        this.$toast('暂未开启微信验证，请手动填写code')
-      }
-      // 微信验证，测试环境先关闭
-      //  else {
-      //   let platform = JSON.parse(localStorage.getItem('platform'))
-      //   let redirectUri = 'http%3a%2f%2f10.0.96.103%3a8080%2fhome'
-      //   let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${platform.appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
-      //   location.href = url
+      } 
+      // else {
+      //   this.$toast('暂未开启微信验证，请手动填写code')
       // }
+      // 微信验证，测试环境先关闭
+       else {
+        let platform = JSON.parse(localStorage.getItem('platform'))
+        let redirectUri = encodeURIComponent(window.location.href)
+        let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${platform.appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
+        location.href = url
+      }
     },
 
     defaultProcess() {
