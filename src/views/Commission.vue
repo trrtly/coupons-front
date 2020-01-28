@@ -163,8 +163,8 @@ export default {
       timestampToTime (time) {
        return timestampToTime(time)
     },
-    withdraw() {
-      const res = this.$api.withdraw()
+    async withdraw() {
+      const res = await this.$api.withdraw()
       console.log(res)
       if (res.code != 200) {
         Toast(res.msg)
