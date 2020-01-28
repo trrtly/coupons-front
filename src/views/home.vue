@@ -23,10 +23,12 @@
           <b>{{ userInfo.score }}</b>
         </span>
       </div>
-      <a class="jifenchongzhi" href="#">
+      <router-link to="/chongzhiIntegral">
+      <div class="jifenchongzhi">
         <img src="@/assets/images/jifen_icon.png" alt="" />
         <span>积分充值</span>
-      </a>
+      </div>
+      </router-link>
     </div>
     <div class="lunbo_content">
       <van-swipe :autoplay="3000" indicator-color="white">
