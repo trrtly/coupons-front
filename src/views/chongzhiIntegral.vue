@@ -2,10 +2,7 @@
     <div id="personal-page">
         <div class="top_bg">
             <div class="userimg">
-                <img
-                    :src="userInfo.headimgurl"
-                    alt="0元购"
-                >
+                <img :src="userInfo.headimgurl">
             </div>
             <div class="username">
                 <h4>{{userInfo.nickname}}</h4>
@@ -27,48 +24,37 @@
                     @click="changeSelect(index)"
                     :class="{'bg_color': defaultIndex === index}"
                 >
-                    <h2>{{item.howIntegral}}<span>积分</span></h2>
+                    <h2>{{item.score}}<span>积分</span></h2>
 
-                    <p>售价：<span>{{item.saleMoney}}元</span></p>
-                    <p>预计节省<span>{{item.saveMoney}}元外卖红包</span></p>
-                </li>
-                <li>
-                    <p class="nonedata">敬请期待</p>
+                    <p>售价：<span>{{item.amount}}元</span></p>
+                    <p>{{item.description}}</p>
                 </li>
             </ul>
             <van-button
                 type="primary"
                 text="立即充值"
-                @click="show = true"
+                @click="chongzhiClick"
             />
-            <van-overlay
-                :show="show"
-                @click="show = false"
-            >
-                <div
-                    class="wrapper"
-                >
+            <van-overlay :show="show" @click="show = false">
+                <div class="wrapper" >
                     <div class="block" >
-                      <img 
-                      :src="erweimasrc"
-                      alt=""
-                      >
+                      <img :src="erweimasrc" >
                     </div>
                 </div>
             </van-overlay>
             <div class="rechargeRules">
                 <h3>充值说明:</h3>
-                <p>1.请关注公众号：<span>猪侠外卖助手</span>,以便参与更多活动。 </p>
+                <p>1.请关注公众号：<span @click="show = true">{{ platform.name }}</span>,以便参与更多活动。 </p>
                 <p>2.积分可用于本公众号提供的所有活动，一经充值概不退款。</p>
                 <p>3.有任何问题请与客服联系，谢谢。</p>
             </div>
         </div>
-        <div class="bottom_bg">
+        <!-- <div class="bottom_bg">
             <img
                 src="@/assets/images/bottom_bg.png"
                 alt=""
             >
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -79,31 +65,36 @@ export default {
   data() {
     return {
       show: false,
-      integralNum: 2345,
+      integralNum: 0,
       defaultIndex: 0,
-      erweimasrc:require('@/assets/images/tc_erweima.png'),
-      typeList: [
-        { howIntegral: 10, saleMoney: 1, saveMoney: 10 },
-        { howIntegral: 60, saleMoney: 5, saveMoney: 50 },
-        { howIntegral: 130, saleMoney: 10, saveMoney: 100 }
-      ]
+      platform: {},
+      erweimasrc: "",
+      typeList: []
     }
   },
-  mounted() {},
+  mounted() {
+    this.getScores()
+    this.platform = JSON.parse(localStorage.getItem('platform'))
+    this.erweimasrc = this.platform.kfImg
+  },
   methods: {
     changeSelect(i) {
       this.defaultIndex = i
       // console.log(this.defaultIndex)
     },
     chongzhiClick() {
-      //   this.$dialog
-      //     .alert({
-      //       title: '标题',
-      //       message: '弹窗内容'
-      //     })
-      //     .then(() => {
-      //       console.log(122222)
-      //     })
+        this.$dialog
+          .alert({
+            title: '标题',
+            message: '弹窗内容'
+          })
+          .then(() => {
+            console.log(122222)
+          })
+    },
+    async getScores() {
+      const res = await this.$api.scores()
+      this.typeList = res.data
     }
   },
    computed:{

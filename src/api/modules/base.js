@@ -64,5 +64,11 @@ export default [
     name: 'getredPacks',
     path: '/api/v1/redpacks',
     method: 'post'
+  },
+  {
+    //获取积分列表
+    name: 'scores',
+    path: '/api/v1/scores',
+    method: 'get'
   }
 ]

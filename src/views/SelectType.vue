@@ -170,6 +170,7 @@ export default {
 
     async Redpacks() {
       const res = await this.$api.redPacks({})
+      console.log(res)
       this.id = res.data[0].id
       this.ReceiveType = res.data
     },
