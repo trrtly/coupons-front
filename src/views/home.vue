@@ -93,7 +93,8 @@ export default {
 
   methods: {
     async getBanners() {
-      this.banners = await this.$api.Banners({})
+      const res = await this.$api.Banners({})
+      this.banners = res.data
     }
   }
 }

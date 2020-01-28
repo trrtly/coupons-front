@@ -143,7 +143,7 @@ export default {
     },
     async getAnnouncements() {
       const res = await this.$api.Announcements({})
-      this.Announcements = res
+      this.Announcements = res.data
     }
   },
   computed: {

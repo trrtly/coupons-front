@@ -57,7 +57,7 @@ export default {
     },
    async scoreRecords(){
       const res = await this.$api.scoreRecords({page:this.page,limit:this.limit})
-      this.recordList = res
+      this.recordList = res.data
     },
        async scrollMoreData() {
          const scrollTopHeight = document.documentElement.scrollTop || document.body.scrollTop //滚动高度
@@ -68,7 +68,7 @@ export default {
              this.loadingMore = true
              this.page += 1
              const res = await this.$api.scoreRecords({page:this.page,limit:this.limit})
-             if(res == ''){
+             if(res.data == ''){
                 this.isScroll = false
                 this.$toast('没有更多记录了!')
                 

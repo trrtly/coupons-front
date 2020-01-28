@@ -10,7 +10,7 @@
                 </router-link>
             </div>
             <h1>{{userInfo.cms}}</h1>
-            <button>点击提现</button>
+            <button @click.stop="withdraw">点击提现</button>
         </div>
         <div class="twoMsg">
             <div class="msgContent">
@@ -92,25 +92,37 @@
                 </ul>
             </div>
         </div>
+        <van-overlay :show="withdrawShow" @click="withdrawShow = false">
+        <div class="wrapper">
+          <div class="block">
+            <h3>提现成功</h3>
+            <img src="@/assets/images/close-btn.png" />
+            <p>提现申请提交成功,佣金将以红包形式返还,请留意公众号消息</p>
+            <button>我知道了</button>
+          </div>
+        </div>
+      </van-overlay>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import {timestampToTime} from '../assets/untils/index'
+import { Toast } from 'vant'
 export default {
   components: {},
   data() {
     return {
-      ketixianyongjin: 66.66,
-      leijiyongjin: 88.88,
-      leijituiguangrenshu: 9999,
+      ketixianyongjin: 0.00,
+      leijiyongjin: 0.00,
+      leijituiguangrenshu: 0,
       recordList: [],
       loading:true,
       isScroll:true,
       loadingMore: false,//loading加载更多
       page:1,
-      limit:8
+      limit:8,
+      withdrawShow: false
     }
   },
   mounted() {
@@ -123,9 +135,9 @@ export default {
     },
     async getRecords(){
       const res = await this.$api.Records({page:this.page,limit:this.limit})
-      this.recordList = res.list
-      this.leijiyongjin = res.totalCms
-      this.leijituiguangrenshu = res.totalInviteNum
+      this.recordList = res.data.list
+      this.leijiyongjin = res.data.totalCms
+      this.leijituiguangrenshu = res.data.totalInviteNum
     },
 
     async scrollMoreData() {
@@ -137,9 +149,9 @@ export default {
              this.loadingMore = true
              this.page += 1
              const res = await this.$api.Records({page:this.page,limit:this.limit})
-             if(res.list){
+             if(res.data.list){
                 this.loadingMore = false
-                this.recordList = this.recordList.concat(res.list)
+                this.recordList = this.recordList.concat(res.data.list)
                  this.isScroll = true
              }else{
                 this.isScroll = false
@@ -151,6 +163,15 @@ export default {
       timestampToTime (time) {
        return timestampToTime(time)
     },
+    withdraw() {
+      const res = this.$api.withdraw()
+      console.log(res)
+      if (res.code != 200) {
+        Toast(res.msg)
+        return
+      }
+      this.withdrawShow = true
+    }, 
   },
    computed:{
     ...mapGetters(['userInfo'])
@@ -388,6 +409,53 @@ export default {
         clear: both;
       }
     }
+  }
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.block {
+  width: 69.8vw;
+  // height: 48.5vw;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 1.1vw;
+  padding: 3vw 4.85vw 5vw;
+  position: relative;
+  img {
+    position: absolute;
+    right: 4.6vw;
+    top: 3vw;
+    width: 3.15vw;
+    height: 3.15vw;
+  }
+  h3 {
+    height: 4.3vw;
+    line-height: 1;
+    font-size: 4.4vw;
+    font-weight: 600;
+    color: rgba(40, 111, 255, 1);
+  }
+  p {
+    font-size: 3.7vw;
+    font-weight: 400;
+    color: rgba(18, 18, 18, 1);
+    line-height: 5.6vw;
+    text-align: justify;
+    margin-top: 2.5vw;
+  }
+  button {
+    width: 46.9vw;
+    height: 7.4vw;
+    background: rgba(40, 111, 255, 1);
+    border-radius: 3.7vw;
+    font-size: 3.7vw;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    margin-top: 2.5vw;
   }
 }
 </style>

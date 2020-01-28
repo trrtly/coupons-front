@@ -11,7 +11,7 @@ import 'vant/lib/index.css'
 async function initail() {
   const res = await api.getPlatformInfo()
   
-  localStorage.setItem('platform', JSON.stringify(res))
+  localStorage.setItem('platform', JSON.stringify(res.data))
 
   new Vue({
     router,

@@ -43,8 +43,8 @@ export default {
         const res = await this.$api.getToken({
           code: this.$route.query.code
         })
-        localStorage.setItem('token', res.token)
-        localStorage.setItem('expiresAt', res.expiresAt)
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('expiresAt', res.data.expiresAt)
         this.defaultProcess()
       } 
       // else {
@@ -66,7 +66,7 @@ export default {
 
     async getUserInfo() {
       const res = await this.$api.getUserInfo()
-      this.$store.commit('setUserInfo', res)
+      this.$store.commit('setUserInfo', res.data)
     }
   }
 }

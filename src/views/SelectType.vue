@@ -154,14 +154,14 @@ export default {
         validateToken
       })
 
-      if (loginRes != 'ok') return
+      if (loginRes.code != 200) return
 
       const res = await this.$api.getredPacks({
         id: ReceiveType[currentSort].id,
         mobile: inputPhoneValue
       })
 
-      if (res.code === 0) {
+      if (res.code !== 200) {
         this.showFail = true
       } else {
         this.showSueccess = true
@@ -170,8 +170,8 @@ export default {
 
     async Redpacks() {
       const res = await this.$api.redPacks({})
-      this.id = res[0].id
-      this.ReceiveType = res
+      this.id = res.data[0].id
+      this.ReceiveType = res.data
     },
 
     // async getRedpacks() {
@@ -199,11 +199,11 @@ export default {
 
     getUserCurrent(mobile) {
       return new Promise(async resolve => {
-        const { isLogin } = await this.$api.getUserCurrent({
+        const res = await this.$api.getUserCurrent({
           mobile
         })
 
-        resolve(isLogin)
+        resolve(res.data.isLogin)
       })
     },
 
@@ -238,11 +238,11 @@ export default {
     },
 
     async getImgCode(cb) {
-      const { captchaHash, captchaImage } = await this.$api.getCaptcha({
+      const res = await this.$api.getCaptcha({
         mobile: this.inputPhoneValue
       })
-      this.captchaHash = captchaHash
-      this.codeImg = 'data:image/jpg;base64,' + captchaImage
+      this.captchaHash = res.data.captchaHash
+      this.codeImg = 'data:image/jpg;base64,' + res.data.captchaImage
 
       cb && cb()
     },
@@ -257,7 +257,7 @@ export default {
 
       this.$toast('短信验证码发送成功！请注意查收')
       this.canSubmit = true
-      this.validateToken = res.validateToken
+      this.validateToken = res.data.validateToken
       this.showImgCodeBox = false
     }
   }
