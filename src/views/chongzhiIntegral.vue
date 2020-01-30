@@ -21,7 +21,7 @@
                     v-for="(item,index) in typeList"
                     :key="index"
                     :show="show"
-                    @click="changeSelect(index)"
+                    @click="changeSelect(index, item.id)"
                     :class="{'bg_color': defaultIndex === index}"
                 >
                     <h2>{{item.score}}<span>积分</span></h2>
@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       show: false,
+      id: 0,
       integralNum: 0,
       defaultIndex: 0,
       platform: {},
@@ -78,9 +79,10 @@ export default {
     this.erweimasrc = this.platform.kfImg
   },
   methods: {
-    changeSelect(i) {
+    changeSelect(i, id) {
       this.defaultIndex = i
-      // console.log(this.defaultIndex)
+      this.id = id
+      console.log(this.id)
     },
     chongzhiClick() {
         this.$dialog

@@ -70,5 +70,11 @@ export default [
     name: 'scores',
     path: '/api/v1/scores',
     method: 'get'
+  },
+  {
+    //获取红包领取记录列表
+    name: 'redpackLogs',
+    path: '/api/v1/redpackLogs',
+    method: 'get'
   }
 ]

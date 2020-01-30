@@ -4,8 +4,8 @@
       <div class="fixedtop">
         <van-swipe vertical loop :autoplay="3000" stop-propagation>
           <van-swipe-item v-for="(item, index) in lunboList" :key="index">
-            <img src="@/assets/images/wenzilunbo_icon.png" alt="" />
-            {{ item.name }} {{ item.time }}
+            <img :src="item.headimgurl" alt="" />
+            {{ item.nickname }} {{ item.description }}
           </van-swipe-item>
         </van-swipe>
       </div>
@@ -30,7 +30,7 @@
       </div>
       </router-link>
     </div>
-    <div class="lunbo_content">
+    <div class="lunbo_content" v-if="banners">
       <van-swipe :autoplay="3000" indicator-color="white">
         <van-swipe-item v-for="(item, index) in banners" :key="index">
           <a :href="item.url">
@@ -40,9 +40,9 @@
       </van-swipe>
     </div>
     <SelectType />
-    <div class="floaticon">
+    <div class="floaticon" v-if="platform.floatWindow">
       <a :href="platform.floatWindow.url">
-        <img :src="platform.floatWindow.img" alt="0元购" />
+        <img :src="platform.floatWindow.img" />
       </a>
     </div>
     <BottomFixed />
@@ -58,28 +58,7 @@ export default {
   components: { BottomFixed, SelectType },
   data() {
     return {
-      lunboList: [
-        // {
-        //   name: '🍍',
-        //   time: '在5分钟前领取5元红包'
-        // },
-        // {
-        //   name: '我是小**~🌱',
-        //   time: '在32秒前领取4元红包'
-        // },
-        // {
-        //   name: '蔡**凤',
-        //   time: '在10秒前领取5元红包'
-        // },
-        // {
-        //   name: '随风而**遇。',
-        //   time: '在10秒前领取5元红包'
-        // },
-        // {
-        //   name: '随风而**遇。',
-        //   time: '在17分钟前领取6元红包'
-        // }
-      ],
+      lunboList: [],
       platform: JSON.parse(localStorage.getItem('platform')),
       banners: []
     }
@@ -91,12 +70,17 @@ export default {
 
   mounted() {
     this.getBanners()
+    this.getRedpackLogs()
   },
 
   methods: {
     async getBanners() {
       const res = await this.$api.Banners({})
       this.banners = res.data
+    },
+    async getRedpackLogs() {
+      const res = await this.$api.redpackLogs({})
+      this.lunboList = res.data
     }
   }
 }
