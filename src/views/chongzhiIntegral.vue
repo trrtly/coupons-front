@@ -82,7 +82,6 @@ export default {
     changeSelect(i, id) {
       this.defaultIndex = i
       this.id = id
-      console.log(this.id)
     },
     chongzhiClick() {
         this.$dialog
@@ -91,7 +90,6 @@ export default {
             message: '弹窗内容'
           })
           .then(() => {
-            console.log(122222)
           })
     },
     async getScores() {

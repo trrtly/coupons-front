@@ -131,7 +131,7 @@ export default {
     },
 
     async onSubmit() {
-      if (!this.smsCode) {
+      if (this.showSmsBox && !this.smsCode) {
         this.$toast('请输入短信验证码!')
         return false
       }
