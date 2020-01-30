@@ -122,7 +122,7 @@ export default {
 
   mounted() {
     this.Redpacks()
-    this.checkUserMobile()
+    // this.checkUserMobile()
   },
 
   methods: {
@@ -170,25 +170,16 @@ export default {
 
     async Redpacks() {
       const res = await this.$api.redPacks({})
-      console.log(res)
       this.id = res.data[0].id
       this.ReceiveType = res.data
     },
-
-    // async getRedpacks() {
-    //   const res = await this.$api.redPacks({
-    //     id: this.id,
-    //     mobile: this.inputPhoneValue
-    //   })
-    // },
 
     async checkUserMobile() {
       const mobile = this.userInfo.mobile
       if (mobile) {
         this.inputPhoneValue = mobile
-        const isLogin = await this.getUserCurrent(mobile)
-
-        if (isLogin) {
+        const res = await this.$api.getUserCurrent({mobile})
+        if (res.code == 200 && res.data.isLogin) {
           this.canSubmit = true
         } else {
           this.showSmsBox = true
@@ -198,21 +189,12 @@ export default {
       }
     },
 
-    getUserCurrent(mobile) {
-      return new Promise(async resolve => {
-        const res = await this.$api.getUserCurrent({
-          mobile
-        })
-
-        resolve(res.data.isLogin)
-      })
-    },
-
     async mobileInput() {
       let reg = /^1[3|4|5|7|8|9][0-9]{9}$/
-      if (reg.test(this.inputPhoneValue)) {
-        const isLogin = await this.getUserCurrent(this.inputPhoneValue)
-        if (isLogin) {
+      const mobile = this.inputPhoneValue
+      if (reg.test(mobile)) {
+        const res = await this.$api.getUserCurrent({mobile})
+        if (res.code == 200 && res.data.isLogin) {
           this.canSubmit = true
         } else {
           this.showSmsBox = true
@@ -260,6 +242,11 @@ export default {
       this.canSubmit = true
       this.validateToken = res.data.validateToken
       this.showImgCodeBox = false
+    }
+  },
+  watch: {
+    userInfo: function () {
+      this.checkUserMobile()
     }
   }
 }
