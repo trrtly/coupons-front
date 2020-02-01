@@ -24,10 +24,10 @@
         </span>
       </div>
       <router-link to="/chongzhiIntegral">
-      <div class="jifenchongzhi">
-        <img src="@/assets/images/jifen_icon.png" alt="" />
-        <span>积分充值</span>
-      </div>
+        <div class="jifenchongzhi">
+          <img src="@/assets/images/jifen_icon.png" alt="" />
+          <span>积分充值</span>
+        </div>
       </router-link>
     </div>
     <div class="lunbo_content" v-if="banners">

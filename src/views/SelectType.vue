@@ -178,7 +178,7 @@ export default {
       const mobile = this.userInfo.mobile
       if (mobile) {
         this.inputPhoneValue = mobile
-        const res = await this.$api.getUserCurrent({mobile})
+        const res = await this.$api.getUserCurrent({ mobile })
         if (res.code == 200 && res.data.isLogin) {
           this.canSubmit = true
         } else {
@@ -193,7 +193,7 @@ export default {
       let reg = /^1[3|4|5|7|8|9][0-9]{9}$/
       const mobile = this.inputPhoneValue
       if (reg.test(mobile)) {
-        const res = await this.$api.getUserCurrent({mobile})
+        const res = await this.$api.getUserCurrent({ mobile })
         if (res.code == 200 && res.data.isLogin) {
           this.canSubmit = true
         } else {
@@ -245,7 +245,7 @@ export default {
     }
   },
   watch: {
-    userInfo: function () {
+    userInfo: function() {
       this.checkUserMobile()
     }
   }
