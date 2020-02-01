@@ -76,5 +76,11 @@ export default [
     name: 'redpackLogs',
     path: '/api/v1/redpackLogs',
     method: 'get'
+  },
+  {
+    //获取邀请好友列表
+    name: 'getInviteRecords',
+    path: '/api/v1/invite/records',
+    method: 'get'
   }
 ]

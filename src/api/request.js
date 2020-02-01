@@ -8,11 +8,18 @@ function axios(config) {
         if (res.status === 200) {
           resolve(res.data)
         } else {
-          Toast(res.msg)
+          Toast(res.msg || '请求错误')
         }
       })
       .catch(error => {
         Toast(error.data.msg)
+
+        // if (error.status === 401) {
+        //   let platform = JSON.parse(localStorage.getItem('platform'))
+        //   let redirectUri = encodeURIComponent(window.location.href)
+        //   let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${platform.appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
+        //   location.href = url
+        // }
       })
   })
 }

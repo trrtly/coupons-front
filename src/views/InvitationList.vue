@@ -15,31 +15,40 @@
         <span>积分+12</span>
       </p>
     </div>
-    <div class="noinvitation" v-if="!recordList.length">
+
+    <template v-if="recordList.length">
+      <div class="hasinvitation">
+        <div class="invitation">
+          <div class="invitation_title">
+            <div><span>邀请列表:</span></div>
+          </div>
+          <div class="recordList">
+            <ul>
+              <li v-for="(item, index) in recordList" :key="index">
+                <div class="recordlf">
+                  <img :src="item.src" alt="" />
+                  <div>
+                    <p>{{ item.username }}</p>
+                    <p>{{ item.withdrawalTime }}</p>
+                  </div>
+                </div>
+                <div class="clear"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <button class="get_more" v-if="page <= total">点击加载更多</button>
+
+      <div class="nomore" v-else>没有更多数据</div>
+    </template>
+
+    <div class="noinvitation" v-else>
       <img src="@/assets/images/noinvitation-img.png" alt="0元购" />
       <p>您还没有任何邀请</p>
     </div>
-    <div class="hasinvitation" v-if="recordList.length">
-      <div class="invitation">
-        <div class="invitation_title">
-          <div><span>邀请列表:</span></div>
-        </div>
-        <div class="recordList">
-          <ul>
-            <li v-for="(item, index) in recordList" :key="index">
-              <div class="recordlf">
-                <img :src="item.src" alt="" />
-                <div>
-                  <p>{{ item.username }}</p>
-                  <p>{{ item.withdrawalTime }}</p>
-                </div>
-              </div>
-              <div class="clear"></div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+
     <div class="invitationList">
       <button @click="openPopup">马上邀请</button>
     </div>
@@ -59,54 +68,44 @@ export default {
   data() {
     return {
       show: false,
-      recordList: [
-        {
-          src: require('@/assets/images/user_small_1.png'),
-          username: '想吃烧烤',
-          withdrawalTime: '2019-11-29  21:19:09'
-        },
-        {
-          src: require('@/assets/images/user_small_2.png'),
-          username: '想吃火锅',
-          withdrawalTime: '2019-11-29  21:19:09'
-        },
-        {
-          src: require('@/assets/images/user_small_3.png'),
-          username: '想看电影',
-          withdrawalTime: '2019-11-29  21:19:09'
-        },
-        {
-          src: require('@/assets/images/user_small_3.png'),
-          username: '想看电影',
-          withdrawalTime: '2019-11-29  21:19:09'
-        },
-        {
-          src: require('@/assets/images/user_small_3.png'),
-          username: '想看电影',
-          withdrawalTime: '2019-11-29  21:19:09'
-        },
-        {
-          src: require('@/assets/images/user_small_3.png'),
-          username: '想看电影',
-          withdrawalTime: '2019-11-29  21:19:09'
-        }
-      ]
+      page: 1,
+      limit: 20,
+      total: 0,
+      recordList: []
     }
   },
-  mounted() {},
+
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
+
+  beforeMount() {
+    this.getList()
+  },
+
   methods: {
     jumpUrl(e) {
       this.$router.push({ path: '/' + e })
     },
+
     openPopup() {
       this.show = true
     },
+
     closePopup() {
       this.show = false
+    },
+
+    async getList() {
+      let { list, totalInviteNum } = await this.$api.getInviteRecords({
+        page: this.page,
+        limit: this.limit
+      })
+
+      this.recordList = list
+      this.page = this.page + 1
+      this.total = Math.ceil(totalInviteNum / this.limit)
     }
-  },
-  computed: {
-    ...mapGetters(['userInfo'])
   }
 }
 </script>
@@ -289,6 +288,25 @@ export default {
     font-weight: 400;
     color: rgba(255, 255, 255, 1);
   }
+}
+
+.get_more {
+  padding: 1vw 2vw;
+  margin: 2vw auto;
+  font-size: 3.5vw;
+  color: rgba(255, 255, 255, 1);
+  background: linear-gradient(
+    267deg,
+    rgba(41, 85, 255, 1) 0%,
+    rgba(39, 134, 255, 1) 100%
+  );
+  border-radius: 0.9vw;
+}
+
+.nomore {
+  margin: 2vw auto;
+  font-size: 3.5vw;
+  color: #666;
 }
 /deep/.van-popup {
   background-color: rgba(33, 3, 33, 0.1);

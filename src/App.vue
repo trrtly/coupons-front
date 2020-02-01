@@ -66,10 +66,7 @@ export default {
 
     async getUserInfo() {
       const res = await this.$api.getUserInfo()
-      if (res.code == 1001) {
-        this.noTokenProcess()
-        return
-      }
+
       this.$store.commit('setUserInfo', res.data)
     }
   }
