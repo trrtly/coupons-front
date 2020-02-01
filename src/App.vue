@@ -40,6 +40,7 @@ export default {
 
     async noTokenProcess() {
       if (this.$route.query.code) {
+        localStorage.removeItem('token')
         const res = await this.$api.getToken({
           code: this.$route.query.code
         })

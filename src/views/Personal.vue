@@ -69,8 +69,8 @@
             <p>邀请好友</p>
           </li>
         </router-link>
-        <a href="">
-          <li>
+        <a href="javascript: void(0)">
+          <li @click="showService = true">
             <img src="@/assets/images/xiaoxi_img.png" alt="联系客服" />
             <p>联系客服</p>
           </li>
@@ -94,6 +94,14 @@
       </van-overlay>
     </div>
     <BottomFixed />
+
+    <van-overlay :show="showService" @click="showService = false">
+      <div class="wrapper">
+        <div class="box" @click.stop>
+          <img :src="platform.kfImg" alt="客服二维码" />
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -107,10 +115,16 @@ export default {
     return {
       show: false,
       Announcements: [{}],
-      theIndex: 0
-      // platform :JSON.parse(localStorage.getItem('platform'))
+      theIndex: 0,
+      showService: false,
+      platform: JSON.parse(localStorage.getItem('platform'))
     }
   },
+
+  computed: {
+    ...mapGetters(['userInfo'])
+  },
+
   mounted() {
     this.getAnnouncements()
     // this.$dialog
@@ -126,6 +140,7 @@ export default {
     jumpUrl(e) {
       this.$router.push({ path: '/' + e })
     },
+
     copy() {
       var clipboard = new Clipboard('.tag-read')
       clipboard.on('success', () => {
@@ -137,17 +152,16 @@ export default {
         clipboard.destroy()
       })
     },
+
     openTc(i) {
       this.show = true
       this.theIndex = i
     },
+
     async getAnnouncements() {
       const res = await this.$api.Announcements({})
       this.Announcements = res.data
     }
-  },
-  computed: {
-    ...mapGetters(['userInfo'])
   }
 }
 </script>
@@ -355,6 +369,12 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
+
+  .box {
+    img {
+      width: 90vw;
+    }
+  }
 }
 
 .block {

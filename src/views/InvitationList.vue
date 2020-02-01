@@ -26,10 +26,10 @@
             <ul>
               <li v-for="(item, index) in recordList" :key="index">
                 <div class="recordlf">
-                  <img :src="item.src" alt="" />
+                  <img :src="item.headimgurl" alt="" />
                   <div>
-                    <p>{{ item.username }}</p>
-                    <p>{{ item.withdrawalTime }}</p>
+                    <p>{{ item.nickname }}</p>
+                    <p>{{ item.createdAt }}</p>
                   </div>
                 </div>
                 <div class="clear"></div>
@@ -102,7 +102,7 @@ export default {
         limit: this.limit
       })
 
-      this.recordList = list
+      this.recordList = list || []
       this.page = this.page + 1
       this.total = Math.ceil(totalInviteNum / this.limit)
     }

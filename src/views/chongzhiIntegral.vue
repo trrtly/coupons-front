@@ -1,61 +1,67 @@
 <template>
-    <div id="personal-page">
-        <div class="top_bg">
-            <div class="userimg">
-                <img :src="userInfo.headimgurl">
-            </div>
-            <div class="username">
-                <h4>{{userInfo.nickname}}</h4>
-                <p>积分：{{userInfo.score}}</p>
-            </div>
-            <router-link to="./RechargeRecord">
-            <div class="chongzhirecord">
-                <span>充值记录</span>
-            </div>
-            </router-link>
+  <div id="personal-page">
+    <div class="top_bg">
+      <div class="userimg">
+        <img :src="userInfo.headimgurl" />
+      </div>
+      <div class="username">
+        <h4>{{ userInfo.nickname }}</h4>
+        <p>积分：{{ userInfo.score }}</p>
+      </div>
+      <router-link to="./RechargeRecord">
+        <div class="chongzhirecord">
+          <span>充值记录</span>
         </div>
-        <div class="chongzhileixing">
-            <h4>请选择充值金额</h4>
-            <ul>
-                <li
-                    v-for="(item,index) in typeList"
-                    :key="index"
-                    :show="show"
-                    @click="changeSelect(index, item.id)"
-                    :class="{'bg_color': defaultIndex === index}"
-                >
-                    <h2>{{item.score}}<span>积分</span></h2>
+      </router-link>
+    </div>
+    <div class="chongzhileixing">
+      <h4>请选择充值金额</h4>
+      <ul>
+        <li
+          v-for="(item, index) in typeList"
+          :key="index"
+          :show="show"
+          @click="changeSelect(index, item.id)"
+          :class="{ bg_color: defaultIndex === index }"
+        >
+          <h2>
+            {{ item.score }}
+            <span>积分</span>
+          </h2>
 
-                    <p>售价：<span>{{item.amount}}元</span></p>
-                    <p>{{item.description}}</p>
-                </li>
-            </ul>
-            <van-button
-                type="primary"
-                text="立即充值"
-                @click="chongzhiClick"
-            />
-            <van-overlay :show="show" @click="show = false">
-                <div class="wrapper" >
-                    <div class="block" >
-                      <img :src="erweimasrc" >
-                    </div>
-                </div>
-            </van-overlay>
-            <div class="rechargeRules">
-                <h3>充值说明:</h3>
-                <p>1.请关注公众号：<span @click="show = true">{{ platform.name }}</span>,以便参与更多活动。 </p>
-                <p>2.积分可用于本公众号提供的所有活动，一经充值概不退款。</p>
-                <p>3.有任何问题请与客服联系，谢谢。</p>
-            </div>
+          <p>
+            售价：
+            <span>{{ item.amount }}元</span>
+          </p>
+          <p>{{ item.description }}</p>
+        </li>
+      </ul>
+      <van-button type="primary" text="立即充值" @click="chongzhiClick" />
+      <van-overlay :show="show" @click="show = false">
+        <div class="wrapper">
+          <div class="block">
+            <img :src="erweimasrc" />
+          </div>
         </div>
-        <!-- <div class="bottom_bg">
+      </van-overlay>
+      <div class="rechargeRules">
+        <h3>充值说明:</h3>
+        <p>
+          1.请关注公众号：
+          <span @click="show = true">{{ platform.name }}</span>
+          ,以便参与更多活动。
+        </p>
+        <p>2.积分可用于本公众号提供的所有活动，一经充值概不退款。</p>
+        <p>3.有任何问题请与客服联系，谢谢。</p>
+      </div>
+    </div>
+    <!-- <div class="bottom_bg">
             <img
                 src="@/assets/images/bottom_bg.png"
                 alt=""
             >
         </div> -->
-    </div>
+  </div>
 </template>
 
 <script>
@@ -69,7 +75,7 @@ export default {
       integralNum: 0,
       defaultIndex: 0,
       platform: {},
-      erweimasrc: "",
+      erweimasrc: '',
       typeList: []
     }
   },
@@ -84,25 +90,23 @@ export default {
       this.id = id
     },
     chongzhiClick() {
-        this.$dialog
-          .alert({
-            title: '标题',
-            message: '弹窗内容'
-          })
-          .then(() => {
-          })
+      this.$dialog
+        .alert({
+          title: '标题',
+          message: '弹窗内容'
+        })
+        .then(() => {})
     },
     async getScores() {
       const res = await this.$api.scores()
       this.typeList = res.data
     }
   },
-   computed:{
+  computed: {
     ...mapGetters(['userInfo'])
-  },
+  }
 }
 </script>
-
 
 <style lang="less" scoped>
 .top_bg {
@@ -200,7 +204,7 @@ export default {
         font-weight: bold;
         font-style: italic;
         color: rgba(0, 109, 255, 1);
-        text-shadow: 3px 4px 0px rgba(0, 87, 255, 0.3);
+        text-shadow: 2px 2px 0px rgba(0, 87, 255, 0.3);
         margin-bottom: 2.7vw;
         span {
           height: 3.2vw;
@@ -307,10 +311,10 @@ export default {
 .block {
   width: 62.5vw;
   height: 75.2vw;
-  background:url(../assets/images/erweima_tc.png) no-repeat;
+  background: url(../assets/images/erweima_tc.png) no-repeat;
   background-size: 100%;
   position: relative;
-  img{
+  img {
     width: 31.5vw;
     height: 31.5vw;
     position: absolute;
@@ -319,4 +323,3 @@ export default {
   }
 }
 </style>
-
