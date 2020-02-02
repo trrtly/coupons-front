@@ -26,7 +26,7 @@
       <h3>请输入饿了么手机号</h3>
       <div class="input-box">
         <input
-          type="tel"
+          type="text"
           placeholder="11位手机号"
           maxlength="11"
           v-model="inputPhoneValue"
@@ -37,7 +37,7 @@
         <input
           type="number"
           placeholder="短信验证码"
-          maxlength="6"
+          max="6"
           v-model="smsCode"
         />
         <button class="btn btn-send-code" @click="getSmsCode">
@@ -199,6 +199,11 @@ export default {
         } else {
           this.showSmsBox = true
         }
+      }
+
+      let reg2 = new RegExp('^[0-9]*$')
+      if (!reg2.test(mobile[mobile.length - 1])) {
+        this.inputPhoneValue = mobile.substring(0, mobile.length - 1)
       }
     },
 
