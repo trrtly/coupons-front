@@ -17,7 +17,6 @@
           </div>
           <div class="selectBottom" v-if="currentSort === index">
             <p>{{ item.description }}</p>
-            <p>{{ item.describe2 }}</p>
           </div>
         </li>
       </ul>
