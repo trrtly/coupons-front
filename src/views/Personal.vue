@@ -63,24 +63,24 @@
             <p>常见问题</p>
           </li>
         </router-link>
-        <router-link to="InvitationList">
-          <li>
+        <a href="javascript: void(0)">
+          <li @click="showPoster = true">
             <img src="@/assets/images/yaoqing_img.png" alt="邀请好友" />
             <p>邀请好友</p>
           </li>
-        </router-link>
+        </a>
         <a href="javascript: void(0)">
           <li @click="showService = true">
             <img src="@/assets/images/xiaoxi_img.png" alt="联系客服" />
             <p>联系客服</p>
           </li>
         </a>
-        <a href="">
+        <router-link to="/WelfareCentre">
           <li>
             <img src="@/assets/images/liwu_img.png" alt="福利中心" />
             <p>福利中心</p>
           </li>
-        </a>
+        </router-link>
       </ul>
       <van-overlay :show="show" @click="show = false">
         <div class="wrapper">
@@ -102,18 +102,22 @@
         </div>
       </div>
     </van-overlay>
+
+    <posterPopup v-if="showPoster" @close="showPoster = false" />
   </div>
 </template>
 
 <script>
 import Clipboard from 'clipboard'
 import BottomFixed from './BottomFixed'
+import posterPopup from '@/components/poster.vue'
 import { mapGetters } from 'vuex'
 export default {
-  components: { BottomFixed },
+  components: { BottomFixed, posterPopup },
   data() {
     return {
       show: false,
+      showPoster: false,
       Announcements: [{}],
       theIndex: 0,
       showService: false,
@@ -127,14 +131,6 @@ export default {
 
   mounted() {
     this.getAnnouncements()
-    // this.$dialog
-    //   .alert({
-    //     title: '标题',
-    //     message: '弹窗内容'
-    //   })
-    //   .then(() => {
-    //     console.log(122222)
-    //   })
   },
   methods: {
     jumpUrl(e) {

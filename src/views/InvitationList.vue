@@ -52,19 +52,17 @@
     <div class="invitationList">
       <button @click="openPopup">马上邀请</button>
     </div>
-    <van-popup v-model="show" position="bottom" :style="{ height: '100%' }">
-      <img src="@/assets/images/share_bg.png" alt="邀请" />
-      <div class="close-btn" @click="closePopup">
-        <img src="@/assets/images/close-btn.png" alt="关闭" />
-      </div>
-    </van-popup>
+
+    <posterPopup v-if="show" @close="closePopup" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import posterPopup from '@/components/poster.vue'
+
 export default {
-  components: {},
+  components: { posterPopup },
   data() {
     return {
       show: false,
@@ -307,24 +305,5 @@ export default {
   margin: 2vw auto;
   font-size: 3.5vw;
   color: #666;
-}
-/deep/.van-popup {
-  background-color: rgba(33, 3, 33, 0.1);
-  background-size: 93%;
-  bottom: 0vw;
-  img {
-    width: 92%;
-    margin-top: 10vw;
-  }
-  .close-btn {
-    position: absolute;
-    top: -7vw;
-    right: 5vw;
-    cursor: pointer;
-    img {
-      width: 4vw;
-      height: 4vw;
-    }
-  }
 }
 </style>

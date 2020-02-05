@@ -8,10 +8,8 @@
         <h4>{{ userInfo.nickname }}</h4>
         <p>积分：{{ userInfo.score }}</p>
       </div>
-      <router-link to="./RechargeRecord">
-        <div class="chongzhirecord">
-          <span>充值记录</span>
-        </div>
+      <router-link to="./RechargeRecord" class="chongzhirecord">
+        <span>充值记录</span>
       </router-link>
     </div>
     <div class="chongzhileixing">

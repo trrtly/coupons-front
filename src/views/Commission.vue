@@ -1,127 +1,119 @@
 <template>
-    <div id="commission-page">
-        <div class="top_bg">
-            <div class="first_div">
-                <p>当前可提现佣金(元)</p>
-                <router-link to="./CommissionRules">
-                    <div class="rules">
-                        <span>佣金规则</span>
-                    </div>
-                </router-link>
-            </div>
-            <h1>{{userInfo.cms}}</h1>
-            <button @click.stop="withdraw">点击提现</button>
-        </div>
-        <div class="twoMsg">
-            <div class="msgContent">
-                <p>{{leijiyongjin}}<span>元</span></p>
-                <P>累计获得佣金</P>
-            </div>
-            <div class="shuxian"></div>
-            <div class="msgContent">
-                <p>{{leijituiguangrenshu}}<span>人</span></p>
-                <P>累计推广人数</P>
-            </div>
-        </div>
-        <div class="process">
-            <div class="process_title">
-                <div class="shuxian"></div><span>获得佣金</span>
-            </div>
-            <div class="process_img">
-                <ul>
-                    <li>
-                        <img
-                            src="@/assets/images/tuandui-icon.png"
-                            alt=""
-                        >
-                        <p>邀请好友</p>
-                    </li>
-                    <img
-                        src="@/assets/images/process-left-icon.png"
-                        alt=""
-                        class="top10"
-                    >
-                    <li>
-                        <img
-                            src="@/assets/images/dingdan-icon.png"
-                            alt=""
-                        >
-                        <p>好友充值</p>
-                    </li>
-                    <img
-                        src="@/assets/images/process-right-icon.png"
-                        alt=""
-                        class="top10"
-                    >
-                    <li>
-                        <img
-                            src="@/assets/images/chongzhi-icon.png"
-                            alt=""
-                        >
-                        <p>获得佣金</p>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
-        <div class="process record">
-            <div class="process_title">
-                <div class="shuxian"></div><span>佣金记录</span>
-            </div>
-            <div class="recordList" >
-                <ul>
-                    <li
-                        v-for="(item,index) in recordList"
-                        :key="index"
-                    >
-                        <div class="recordlf">
-                            <img
-                                :src="item.headimgurl"
-                                alt=""
-                            >
-                            <div>
-                                <p>{{item.nickname}}</p>
-                                <p>{{timestampToTime(item.createdAt * 1000)}}</p>
-                            </div>
-                        </div>
-                        <div class="recordrt">
-                            <span>+{{item.cms}}元</span>
-                        </div>
-                        <div class="clear"></div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <van-overlay :show="withdrawShow" @click="withdrawShow = false">
-        <div class="wrapper">
-          <div class="block">
-            <h3>提现成功</h3>
-            <img src="@/assets/images/close-btn.png" />
-            <p>提现申请提交成功,佣金将以红包形式返还,请留意公众号消息</p>
-            <button>我知道了</button>
+  <div id="commission-page">
+    <div class="top_bg">
+      <div class="first_div">
+        <p>当前可提现佣金(元)</p>
+        <router-link to="./CommissionRules">
+          <div class="rules">
+            <span>佣金规则</span>
           </div>
-        </div>
-      </van-overlay>
+        </router-link>
+      </div>
+      <h1>{{ userInfo.cms }}</h1>
+      <button @click.stop="withdraw">点击提现</button>
     </div>
+    <div class="twoMsg">
+      <div class="msgContent">
+        <p>
+          {{ leijiyongjin }}
+          <span>元</span>
+        </p>
+        <P>累计获得佣金</P>
+      </div>
+      <div class="shuxian"></div>
+      <div class="msgContent">
+        <p>
+          {{ leijituiguangrenshu }}
+          <span>人</span>
+        </p>
+        <P>累计推广人数</P>
+      </div>
+    </div>
+    <div class="process">
+      <div class="process_title">
+        <div class="shuxian"></div>
+        <span>获得佣金</span>
+      </div>
+      <div class="process_img">
+        <ul>
+          <li>
+            <img src="@/assets/images/tuandui-icon.png" alt="" />
+            <p>邀请好友</p>
+          </li>
+          <img
+            src="@/assets/images/process-left-icon.png"
+            alt=""
+            class="top10"
+          />
+          <li>
+            <img src="@/assets/images/dingdan-icon.png" alt="" />
+            <p>好友充值</p>
+          </li>
+          <img
+            src="@/assets/images/process-right-icon.png"
+            alt=""
+            class="top10"
+          />
+          <li>
+            <img src="@/assets/images/chongzhi-icon.png" alt="" />
+            <p>获得佣金</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="process record">
+      <div class="process_title">
+        <div class="shuxian"></div>
+        <span>佣金记录</span>
+      </div>
+      <div class="recordList">
+        <ul>
+          <li v-for="(item, index) in recordList" :key="index">
+            <div class="recordlf">
+              <img :src="item.headimgurl" alt="" />
+              <div>
+                <p>{{ item.nickname }}</p>
+                <p>{{ timestampToTime(item.createdAt * 1000) }}</p>
+              </div>
+            </div>
+            <div class="recordrt">
+              <span>+{{ item.cms }}元</span>
+            </div>
+            <div class="clear"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <van-overlay :show="withdrawShow" @click="withdrawShow = false">
+      <div class="wrapper">
+        <div class="block">
+          <h3>提现成功</h3>
+          <img src="@/assets/images/close-btn.png" />
+          <p>提现申请提交成功,佣金将以红包形式返还,请留意公众号消息</p>
+          <button>我知道了</button>
+        </div>
+      </div>
+    </van-overlay>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import {timestampToTime} from '../assets/untils/index'
+import { timestampToTime } from '../assets/untils/index'
 import { Toast } from 'vant'
 export default {
   components: {},
   data() {
     return {
-      ketixianyongjin: 0.00,
-      leijiyongjin: 0.00,
+      ketixianyongjin: 0.0,
+      leijiyongjin: 0.0,
       leijituiguangrenshu: 0,
       recordList: [],
-      loading:true,
-      isScroll:true,
-      loadingMore: false,//loading加载更多
-      page:1,
-      limit:8,
+      loading: true,
+      isScroll: true,
+      loadingMore: false, //loading加载更多
+      page: 1,
+      limit: 8,
       withdrawShow: false
     }
   },
@@ -133,35 +125,47 @@ export default {
     jumpUrl(e) {
       this.$router.push({ path: '/' + e })
     },
-    async getRecords(){
-      const res = await this.$api.Records({page:this.page,limit:this.limit})
+    async getRecords() {
+      const res = await this.$api.Records({
+        page: this.page,
+        limit: this.limit
+      })
       this.recordList = res.data.list
       this.leijiyongjin = res.data.totalCms
       this.leijituiguangrenshu = res.data.totalInviteNum
     },
 
     async scrollMoreData() {
-         const scrollTopHeight = document.documentElement.scrollTop || document.body.scrollTop //滚动高度
-         const clientHeight = document.documentElement.clientHeight || window.screen.availHeight //屏幕可用工作区高度
-         const offsetHeight = document.documentElement.offsetHeight || document.body.offsetHeight //网页可见区域高(包括边线的宽)
-         if ((scrollTopHeight + clientHeight) + 50 >= offsetHeight && this.isScroll) {
-             this.isScroll = false
-             this.loadingMore = true
-             this.page += 1
-             const res = await this.$api.Records({page:this.page,limit:this.limit})
-             if(res.data.list){
-                this.loadingMore = false
-                this.recordList = this.recordList.concat(res.data.list)
-                 this.isScroll = true
-             }else{
-                this.isScroll = false
-               this.$toast('没有更多记录了!')
-             }
-            }
-         },
+      const scrollTopHeight =
+        document.documentElement.scrollTop || document.body.scrollTop //滚动高度
+      const clientHeight =
+        document.documentElement.clientHeight || window.screen.availHeight //屏幕可用工作区高度
+      const offsetHeight =
+        document.documentElement.offsetHeight || document.body.offsetHeight //网页可见区域高(包括边线的宽)
+      if (
+        scrollTopHeight + clientHeight + 50 >= offsetHeight &&
+        this.isScroll
+      ) {
+        this.isScroll = false
+        this.loadingMore = true
+        this.page += 1
+        const res = await this.$api.Records({
+          page: this.page,
+          limit: this.limit
+        })
+        if (res.data.list) {
+          this.loadingMore = false
+          this.recordList = this.recordList.concat(res.data.list)
+          this.isScroll = true
+        } else {
+          this.isScroll = false
+          this.$toast('没有更多记录了!')
+        }
+      }
+    },
     // // 时间戳转换成时间
-      timestampToTime (time) {
-       return timestampToTime(time)
+    timestampToTime(time) {
+      return timestampToTime(time)
     },
     async withdraw() {
       const res = await this.$api.withdraw()
@@ -170,20 +174,19 @@ export default {
         return
       }
       this.withdrawShow = true
-    }, 
+    }
   },
-   computed:{
+  computed: {
     ...mapGetters(['userInfo'])
   },
-  destroyed () {
+  destroyed() {
     document.removeEventListener('scroll', this.scrollMoreData, false)
   }
 }
 </script>
 
-
 <style lang="less" scoped>
-#commission-page{
+#commission-page {
   background: rgba(245, 245, 245, 1);
 }
 .top_bg {
@@ -458,4 +461,3 @@ export default {
   }
 }
 </style>
-

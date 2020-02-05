@@ -82,5 +82,11 @@ export default [
     name: 'getInviteRecords',
     path: '/api/v1/invite/records',
     method: 'get'
+  },
+  {
+    //获取邀请海报
+    name: 'getPoster',
+    path: '/api/v1/user/poster',
+    method: 'get'
   }
 ]

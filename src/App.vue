@@ -29,13 +29,13 @@ export default {
 
       this.defaultProcess()
 
-      // if (new Date().getTime() > localStorage.getItem('expiresAt')) {
-      //   // console.log('2')
-      //   this.noTokenProcess()
-      // } else {
-      //   // console.log('3')
-      //   this.defaultProcess()
-      // }
+      if (new Date().getTime() > localStorage.getItem('expiresAt')) {
+        // console.log('2')
+        this.noTokenProcess()
+      } else {
+        // console.log('3')
+        this.defaultProcess()
+      }
     },
 
     async noTokenProcess() {
@@ -47,12 +47,12 @@ export default {
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('expiresAt', res.data.expiresAt)
         this.defaultProcess()
-      } 
+      }
       // else {
       //   this.$toast('暂未开启微信验证，请手动填写code')
       // }
       // 微信验证，测试环境先关闭
-       else {
+      else {
         let platform = JSON.parse(localStorage.getItem('platform'))
         let redirectUri = encodeURIComponent(window.location.href)
         let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${platform.appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`

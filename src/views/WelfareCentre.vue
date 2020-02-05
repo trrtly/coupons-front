@@ -1,25 +1,16 @@
 <template>
-    <div id="Welfare-page">
-        <div
-            class="record"
-            v-if="recordList.length"
-        >
-            <div class="recordList">
-                <ul>
-                    <li
-                     v-for="(item,index) in recordList"
-                    :key="index"
-                    >
-                        <img
-                            :src="item.src"
-                            alt=""
-                        >
-                        <p>{{item.title}}</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <div id="Welfare-page">
+    <div class="record" v-if="recordList.length">
+      <div class="recordList">
+        <ul>
+          <li v-for="(item, index) in recordList" :key="index">
+            <img :src="item.src" alt="" />
+            <p>{{ item.title }}</p>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -65,7 +56,6 @@ export default {
 }
 </script>
 
-
 <style lang="less" scoped>
 #Welfare-page {
   background: rgba(243, 243, 243, 1);
@@ -99,12 +89,11 @@ export default {
           margin-top: 2vw;
           width: 100%;
         }
-        &:nth-of-type(2n){
-            margin-right: 0;
+        &:nth-of-type(2n) {
+          margin-right: 0;
         }
       }
     }
   }
 }
 </style>
-

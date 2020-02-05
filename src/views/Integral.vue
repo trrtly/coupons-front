@@ -214,4 +214,10 @@ export default {
     }
   }
 }
+
+.nomore {
+  margin: 2vw auto;
+  font-size: 3.5vw;
+  color: #666;
+}
 </style>

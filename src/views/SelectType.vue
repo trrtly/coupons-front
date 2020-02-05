@@ -17,7 +17,6 @@
           </div>
           <div class="selectBottom" v-if="currentSort === index">
             <p>{{ item.description }}</p>
-            <p>{{ item.describe2 }}</p>
           </div>
         </li>
       </ul>
@@ -109,6 +108,7 @@ export default {
       showSmsBox: false,
       smsCode: '',
       showImgCodeBox: false,
+      isLogin: false,
       codeImg: '',
       captchaCode: '', // 字段名是后端定义的
       captchaHash: '',
@@ -131,12 +131,37 @@ export default {
     },
 
     async onSubmit() {
-      const that = this
       if (!this.inputPhoneValue) {
         this.$toast('请输入手机号码!')
         return false
       }
 
+      if (!this.loginEle()) {
+        return false
+      }
+      const res = await this.$api.getredPacks({
+        id: this.ReceiveType[this.currentSort].id,
+        mobile: this.inputPhoneValue
+      })
+
+      if (res.code !== 200) {
+        this.showFail = true
+      } else {
+        this.showSueccess = true
+      }
+    },
+
+    async Redpacks() {
+      const res = await this.$api.redPacks({})
+      this.id = res.data[0].id
+      this.ReceiveType = res.data
+    },
+
+    async loginEle() {
+      const that = this
+      if (this.isLogin) {
+        return true
+      }
       if (this.showSmsBox && !this.smsCode) {
         this.$toast('请输入短信验证码!')
         return false
@@ -157,13 +182,7 @@ export default {
         return false
       }
 
-      const {
-        inputPhoneValue,
-        smsCode,
-        validateToken,
-        currentSort,
-        ReceiveType
-      } = this
+      const { inputPhoneValue, smsCode, validateToken } = this
 
       this.$toast.loading({
         message: '领取中，请稍等...',
@@ -176,24 +195,10 @@ export default {
         validateToken
       })
 
-      if (loginRes.code != 200) return
-
-      const res = await this.$api.getredPacks({
-        id: ReceiveType[currentSort].id,
-        mobile: inputPhoneValue
-      })
-
-      if (res.code !== 200) {
-        this.showFail = true
-      } else {
-        this.showSueccess = true
+      if (loginRes.code != 200) {
+        return false
       }
-    },
-
-    async Redpacks() {
-      const res = await this.$api.redPacks({})
-      this.id = res.data[0].id
-      this.ReceiveType = res.data
+      return true
     },
 
     async checkUserMobile() {
@@ -203,6 +208,7 @@ export default {
         const res = await this.$api.getUserCurrent({ mobile })
         if (res.code == 200 && res.data.isLogin) {
           this.canSubmit = true
+          this.isLogin = true
         } else {
           this.showSmsBox = true
         }
