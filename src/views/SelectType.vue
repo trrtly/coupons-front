@@ -163,9 +163,7 @@ export default {
       const {
         inputPhoneValue,
         smsCode,
-        validateToken,
-        currentSort,
-        ReceiveType
+        validateToken
       } = this
 
       this.$toast.loading({
