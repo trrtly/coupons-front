@@ -44,7 +44,7 @@
           获取验证码
         </button>
       </div>
-      <button type="button" @click="onSubmit" :disabled="!canSubmit">
+      <button type="button" @click="onSubmit">
         马上领取饿了么大红包
       </button>
       <h4>领取规则</h4>
@@ -131,10 +131,32 @@ export default {
     },
 
     async onSubmit() {
+      const that = this
+      if (!this.inputPhoneValue) {
+        this.$toast('请输入手机号码!')
+        return false
+      }
+
       if (this.showSmsBox && !this.smsCode) {
         this.$toast('请输入短信验证码!')
         return false
       }
+
+      let currentScore = this.ReceiveType[this.currentSort].socre
+      if (this.userInfo.score < currentScore) {
+        this.$dialog
+          .alert({
+            confirmButtonText: '前往充值',
+            showCancelButton: true,
+            message: '您的积分余额不足，快来充值积分吧!'
+          })
+          .then(() => {
+            that.$router.push({ path: '/chongzhiIntegral' })
+          })
+          .catch(() => {})
+        return false
+      }
+
       const {
         inputPhoneValue,
         smsCode,
@@ -144,7 +166,7 @@ export default {
       } = this
 
       this.$toast.loading({
-        message: '加载中...',
+        message: '领取中，请稍等...',
         forbidClick: true
       })
 
