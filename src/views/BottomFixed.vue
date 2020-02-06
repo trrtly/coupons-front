@@ -1,38 +1,38 @@
 <template>
-    <div id="bottomFixed">
-        <div class="bottomDiv">
-            <div :class="RouteName === 'home' ? 'left changecolor' : 'left'">
-                <img
-                    src="@/assets/images/isHongbao.png"
-                    alt="饿了么大红包"
-                    @click="jumpUrl('home')"
-                    v-show="RouteName === 'home'"
-                >
-                <img
-                    src="@/assets/images/isHongbaocolor.png"
-                    alt="饿了么大红包"
-                    @click="jumpUrl('home')"
-                     v-show="RouteName === 'home' ? false : true"
-                >
-                <p>饿了么大红包</p>
-            </div>
-            <div :class="RouteName === 'personal' ? 'right changecolor' : 'right'">
-                <img
-                    src="@/assets/images/isMy.png"
-                    alt="个人中心"
-                    @click="jumpUrl('personal')"
-                     v-show="RouteName === 'personal' ? false : true"
-                >
-                <img
-                    src="@/assets/images/isMycolor.png"
-                    alt="个人中心"
-                    @click="jumpUrl('personal')"
-                    v-show="RouteName === 'personal'"
-                >
-                <p>个人中心</p>
-            </div>
-        </div>
+  <div id="bottomFixed">
+    <div class="bottomDiv">
+      <div :class="RouteName === 'home' ? 'left changecolor' : 'left'">
+        <img
+          src="@/assets/images/isHongbao.png"
+          alt="饿了么大红包"
+          @click="jumpUrl('home')"
+          v-show="RouteName === 'home'"
+        />
+        <img
+          src="@/assets/images/isHongbaocolor.png"
+          alt="饿了么大红包"
+          @click="jumpUrl('home')"
+          v-show="RouteName === 'home' ? false : true"
+        />
+        <p>饿了么大红包</p>
+      </div>
+      <div :class="RouteName === 'personal' ? 'right changecolor' : 'right'">
+        <img
+          src="@/assets/images/isMy.png"
+          alt="个人中心"
+          @click="jumpUrl('personal')"
+          v-show="RouteName === 'personal' ? false : true"
+        />
+        <img
+          src="@/assets/images/isMycolor.png"
+          alt="个人中心"
+          @click="jumpUrl('personal')"
+          v-show="RouteName === 'personal'"
+        />
+        <p>个人中心</p>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -53,7 +53,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="less" scoped>
 .bottomDiv {
@@ -100,4 +99,3 @@ export default {
   }
 }
 </style>
-

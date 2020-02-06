@@ -35,6 +35,7 @@
         </li>
       </ul>
       <van-button type="primary" text="立即充值" @click="chongzhiClick" />
+
       <van-overlay :show="show" @click="show = false">
         <div class="wrapper">
           <div class="block">
@@ -42,6 +43,7 @@
           </div>
         </div>
       </van-overlay>
+
       <div class="rechargeRules">
         <h3>充值说明:</h3>
         <p>
@@ -53,12 +55,6 @@
         <p>3.有任何问题请与客服联系，谢谢。</p>
       </div>
     </div>
-    <!-- <div class="bottom_bg">
-            <img
-                src="@/assets/images/bottom_bg.png"
-                alt=""
-            >
-        </div> -->
   </div>
 </template>
 

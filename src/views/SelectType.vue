@@ -64,12 +64,35 @@
       </div>
       很抱歉，领取失败!
     </van-popup>
-    <van-popup v-model="showSueccess">
-      <div class="mb-10">
-        <van-icon name="passed" size="40" color="#07c160" />
+
+    <div class="success_layer" v-if="showSueccess">
+      <div class="bg"></div>
+      <div class="content_wrap">
+        <p class="title">{{ redPacksRes.title }}</p>
+        <p class="spend">{{ redPacksRes.subTitle }}</p>
+
+        <ul>
+          <li v-for="(item, index) in redPacksRes.list" :key="index">
+            <div class="left_size">
+              <span>¥</span>
+              {{ item.amount }}
+            </div>
+            <div class="rigth_size">
+              <p>{{ item.title }}</p>
+              <span>{{ item.threshold }}</span>
+            </div>
+          </li>
+        </ul>
+
+        <button>再领取一个免费红包（{{ count }}S后跳转）</button>
       </div>
-      恭喜您，领取成功!
-    </van-popup>
+
+      <img
+        src="@/assets/images/circle-close.png"
+        alt="close"
+        @click="showSueccess = false"
+      />
+    </div>
 
     <van-overlay :show="showImgCodeBox">
       <div class="wrapper" @click.stop>
@@ -104,6 +127,7 @@ export default {
       id: '',
       inputPhoneValue: '',
       canSubmit: false,
+      redPacksRes: {},
 
       showSmsBox: false,
       smsCode: '',
@@ -112,7 +136,9 @@ export default {
       codeImg: '',
       captchaCode: '', // 字段名是后端定义的
       captchaHash: '',
-      validateToken: ''
+      validateToken: '',
+      count: 3,
+      href: ''
     }
   },
 
@@ -139,15 +165,31 @@ export default {
       if (!this.loginEle()) {
         return false
       }
-      const res = await this.$api.getredPacks({
+      const { code, data } = await this.$api.getredPacks({
         id: this.ReceiveType[this.currentSort].id,
         mobile: this.inputPhoneValue
       })
 
-      if (res.code !== 200) {
+      if (code !== 200) {
         this.showFail = true
       } else {
+        this.redPacksRes = data
+
+        if (data.type === 1) {
+          let platform = JSON.parse(localStorage.getItem('platform'))
+          let num = Math.floor(Math.random() * (platform.cps.length + 1))
+          this.href = platform.cps[num]
+        } else {
+          this.href = data.url
+        }
         this.showSueccess = true
+
+        setInterval(() => {
+          this.count--
+          if (this.count == 0) {
+            location.href = this.href
+          }
+        }, 1000)
       }
     },
 
@@ -485,6 +527,126 @@ export default {
     padding: 2.5vw;
     margin-top: 1vw;
     margin-bottom: 2vw;
+  }
+}
+
+// 领取成功的弹窗
+.success_layer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 2;
+
+  .bg {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  .content_wrap {
+    position: absolute;
+    top: 18.2vw;
+    left: 50%;
+    width: 70.3vw;
+    height: 112.4vw;
+    background: url('../assets/images/success-bg.png') no-repeat top left;
+    background-size: 100% 100%;
+    transform: translateX(-50%);
+    overflow: hidden;
+
+    .title {
+      margin-top: 23vw;
+      margin-bottom: 2vw;
+      font-size: 3.92vw;
+      color: #ffce93;
+    }
+
+    .spend {
+      // margin-top: 31vw;
+      font-size: 2.64vw;
+      color: rgb(255, 255, 255);
+      line-height: 0.189;
+    }
+
+    ul {
+      width: 47.4vw;
+      height: 45.6vw;
+      margin-left: 12vw;
+      margin-top: 7.5vw;
+      overflow-y: scroll;
+
+      li {
+        display: flex;
+        height: 13.64vw;
+        margin-bottom: 2.4vw;
+        color: #f53248;
+        background: url('../assets/images/bag-item-bg.png') no-repeat center
+          center;
+        background-size: 100% 100%;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
+        .left_size {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 13.6vw;
+          height: 100%;
+          font-size: 5.24vw;
+
+          span {
+            font-size: 3.9vw;
+          }
+        }
+
+        .rigth_size {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          flex: 1;
+          height: 100%;
+          padding-left: 3.4vw;
+
+          p {
+            font-size: 3.27vw;
+          }
+
+          span {
+            font-size: 2.83vw;
+          }
+        }
+      }
+    }
+
+    button {
+      position: absolute;
+      bottom: 3.6vw;
+      left: 50%;
+      width: 83%;
+      height: 10.7vw;
+      padding-left: 11px;
+      font-size: 3.49vw;
+      color: #d14222;
+      text-align: center;
+      background-color: transparent;
+      border: 0;
+      transform: translateX(-49%);
+      border-radius: 5.4vw;
+    }
+  }
+
+  img[alt='close'] {
+    position: absolute;
+    top: 134vw;
+    left: 50%;
+    width: 8vw;
+    height: 8vw;
+    transform: translateX(-50%);
   }
 }
 </style>
