@@ -246,7 +246,11 @@ export default {
 
         if (loginRes.code != 200) {
           resolve(false)
+          return
         }
+        this.canSubmit = true
+        this.isLogin = true
+        this.showSmsBox = false
         resolve(true)
       })
     },
