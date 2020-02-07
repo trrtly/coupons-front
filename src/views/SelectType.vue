@@ -131,7 +131,7 @@ export default {
 
       showSmsBox: false,
       smsCode: '',
-      showImgCodeBox: true,
+      showImgCodeBox: false,
       isLogin: false,
       codeImg: '',
       captchaCode: '', // 字段名是后端定义的
