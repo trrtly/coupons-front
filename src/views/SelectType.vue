@@ -137,7 +137,7 @@ export default {
       captchaCode: '', // 字段名是后端定义的
       captchaHash: '',
       validateToken: '',
-      count: 3,
+      count: 5,
       href: ''
     }
   },
