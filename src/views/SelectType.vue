@@ -190,8 +190,8 @@ export default {
         var i = setInterval(() => {
           this.count--
           if (this.count == 0) {
-            location.href = this.href
             window.clearInterval(i)
+            location.href = this.href
             return
           }
         }, 1000)
