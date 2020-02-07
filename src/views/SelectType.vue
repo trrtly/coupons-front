@@ -558,7 +558,7 @@ export default {
   border-radius: 6px;
 
   input {
-    flex: 1;
+    width: 52vw;
     padding: 2vw 0 2vw 4vw;
     background: rgba(242, 242, 242, 1);
   }
