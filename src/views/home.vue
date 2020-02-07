@@ -23,10 +23,10 @@
           <b>{{ userInfo.score }}</b>
         </span>
       </div>
-      <router-link to="/chongzhiIntegral">
+      <router-link to="/score">
         <div class="jifenchongzhi">
           <img src="@/assets/images/jifen_icon.png" alt="" />
-          <span>积分充值</span>
+          <span>获取积分</span>
         </div>
       </router-link>
     </div>

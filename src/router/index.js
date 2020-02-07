@@ -9,6 +9,7 @@ import chongzhiIntegral from '../views/chongzhiIntegral'
 import RechargeRecord from '../views/RechargeRecord'
 import InvitationList from '../views/InvitationList'
 import WelfareCentre from '../views/WelfareCentre'
+import Score from '../views/Score'
 
 Vue.use(VueRouter)
 
@@ -88,6 +89,14 @@ const routes = [
       title: '福利中心'
     },
     component: WelfareCentre
+  },
+  {
+    path: '/score',
+    name: 'score',
+    meta: {
+      title: '获取积分'
+    },
+    component: Score
   }
 ]
 
