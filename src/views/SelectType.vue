@@ -169,10 +169,19 @@ export default {
       if (!loginEle) {
         return false
       }
+
+      this.$toast.loading({
+          message: '领取中，请稍等...',
+          forbidClick: true,
+          duration: 0
+        })
+
       const { code, data, msg } = await this.$api.getredPacks({
         id: this.ReceiveType[this.currentSort].id,
         mobile: this.inputPhoneValue
       })
+
+      this.$toast.clear()
       
       if (code !== 200) {
         if (msg != '') {
@@ -298,8 +307,11 @@ export default {
         const res = await this.$api.getUserCurrent({ mobile })
         if (res.code == 200 && res.data.isLogin) {
           this.canSubmit = true
+          this.showSmsBox = false
+          this.isLogin = true
         } else {
           this.showSmsBox = true
+          this.isLogin = false
         }
       }
 
