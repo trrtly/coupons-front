@@ -84,7 +84,7 @@
           </li>
         </ul>
 
-        <button>再领取一个免费红包（{{ count }}S后跳转）</button>
+        <button><a :href="href">再领取一个免费红包（{{ count }}S后跳转）</a></button>
       </div>
 
       <img
@@ -183,9 +183,7 @@ export default {
         this.redPacksRes = data
 
         if (data.type === 1) {
-          let platform = JSON.parse(localStorage.getItem('platform'))
-          let num = Math.floor(Math.random() * (platform.cps.length + 1))
-          this.href = platform.cps[num]
+          this.href = this.getCpsUrl()
         } else {
           location.href = data.url
           return
@@ -212,6 +210,12 @@ export default {
       const res = await this.$api.redPacks({})
       this.id = res.data[0].id
       this.ReceiveType = res.data
+    },
+
+    getCpsUrl() {
+      let platform = JSON.parse(localStorage.getItem('platform'))
+      let index = Math.floor((Math.random()*platform.cps.length));
+      return platform.cps[index]
     },
 
     loginEle() {
