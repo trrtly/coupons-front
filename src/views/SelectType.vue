@@ -94,23 +94,22 @@
       />
     </div>
 
-    <van-overlay :show="showImgCodeBox">
-      <div class="wrapper" @click="showImgCodeBox = false">
-        <div class="block" @click.stop>
-          <div class="input-box">
-            <input
-              type="text"
-              maxlength="4"
-              v-model="captchaCode"
-              placeholder="请输入图形验证码"
-            />
-            <img :src="codeImg" alt="图形验证码" @click="getImgCode" />
-          </div>
-
-          <button type="button" class="btn" @click="sendSms">确定</button>
+    <div class="img_code_layer" v-show="showImgCodeBox">
+      <div class="bg" @click="showImgCodeBox = false"></div>
+      <div class="block" @click="imgCodeBoxClick">
+        <div class="input-box">
+          <input
+            type="text"
+            maxlength="4"
+            v-model="captchaCode"
+            placeholder="请输入图形验证码"
+          />
+          <img :src="codeImg" alt="图形验证码" @click="getImgCode" />
         </div>
+
+        <button type="button" class="btn" @click="sendSms">确定</button>
       </div>
-    </van-overlay>
+    </div>
   </div>
 </template>
 
@@ -216,10 +215,12 @@ export default {
         const that = this
         if (this.isLogin) {
           resolve(true)
+          return
         }
         if (this.showSmsBox && !this.smsCode) {
           this.$toast('请输入短信验证码!')
           resolve(false)
+          return
         }
 
         let currentScore = this.ReceiveType[this.currentSort].socre
@@ -235,6 +236,7 @@ export default {
             })
             .catch(() => {})
           resolve(false)
+          return
         }
 
         const { inputPhoneValue, smsCode, validateToken } = this
@@ -328,7 +330,9 @@ export default {
       this.captchaHash = res.data.captchaHash
       this.codeImg = 'data:image/jpg;base64,' + res.data.captchaImage
 
-      cb && cb()
+      if (typeof cb === 'function') {
+        cb()
+      }
     },
 
     async sendSms() {
@@ -363,6 +367,10 @@ export default {
           return
         }
       }, 1000)
+    },
+
+    imgCodeBoxClick(e) {
+      e.stopPropagation()
     }
   },
   watch: {
@@ -542,40 +550,6 @@ export default {
   border-radius: 6px;
 }
 
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.block {
-  // display: flex;
-  // align-items: center;
-  width: 80%;
-  padding: 4vw;
-  background-color: #fff;
-  border-radius: 6px;
-
-  input {
-    width: 52vw;
-    padding: 2vw 0 2vw 4vw;
-    background: rgba(242, 242, 242, 1);
-  }
-
-  img {
-    width: 20vw;
-    height: 9vw;
-  }
-
-  button {
-    width: 100%;
-    padding: 2.5vw;
-    margin-top: 1vw;
-    margin-bottom: 2vw;
-  }
-}
-
 // 领取成功的弹窗
 .success_layer {
   position: fixed;
@@ -693,6 +667,58 @@ export default {
     width: 8vw;
     height: 8vw;
     transform: translateX(-50%);
+  }
+}
+
+.img_code_layer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 2;
+
+  .bg {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  // .wrapper {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   height: 100%;
+  // }
+
+  .block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    padding: 4vw;
+    background-color: #fff;
+    border-radius: 6px;
+    transform: translate(-50%, -50%);
+
+    input {
+      width: 52vw;
+      padding: 2vw 0 2vw 4vw;
+      background: rgba(242, 242, 242, 1);
+    }
+
+    img {
+      width: 20vw;
+      height: 9vw;
+    }
+
+    button {
+      width: 100%;
+      padding: 2.5vw;
+      margin-top: 1vw;
+      margin-bottom: 2vw;
+    }
   }
 }
 </style>
