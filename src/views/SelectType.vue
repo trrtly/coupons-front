@@ -90,13 +90,13 @@
       <img
         src="@/assets/images/circle-close.png"
         alt="close"
-        @click="showSueccess = false"
+        @click="closeSuccessLayer"
       />
     </div>
 
-    <van-overlay :show="showImgCodeBox" @click="showImgCodeBox = false">
-      <div class="wrapper" @click.stop>
-        <div class="block">
+    <van-overlay :show="showImgCodeBox">
+      <div class="wrapper" @click="showImgCodeBox = false">
+        <div class="block" @click.stop>
           <div class="input-box">
             <input
               type="text"
@@ -131,7 +131,7 @@ export default {
 
       showSmsBox: false,
       smsCode: '',
-      showImgCodeBox: false,
+      showImgCodeBox: true,
       isLogin: false,
       codeImg: '',
       captchaCode: '', // 字段名是后端定义的
@@ -140,6 +140,7 @@ export default {
       count: 7,
       smsCount: 60,
       smsBtnText: '获取验证码',
+      timer: null,
       href: ''
     }
   },
@@ -188,15 +189,20 @@ export default {
         }
         this.showSueccess = true
 
-        var i = setInterval(() => {
+        this.timer = setInterval(() => {
           this.count--
           if (this.count == 0) {
-            window.clearInterval(i)
+            window.clearInterval(this.timer)
             location.href = this.href
             return
           }
         }, 1000)
       }
+    },
+
+    closeSuccessLayer() {
+      window.clearInterval(this.timer)
+      this.showSueccess = false
     },
 
     async Redpacks() {
@@ -341,14 +347,14 @@ export default {
       this.showImgCodeBox = false
       this.smsCount = 60
       var i = setInterval(() => {
-          this.smsCount--
-          this.smsBtnText = this.smsCount + 'S'
-          if (this.smsCount == 0) {
-            this.smsBtnText = '重新获取'
-            window.clearInterval(i)
-            return
-          }
-        }, 1000)
+        this.smsCount--
+        this.smsBtnText = this.smsCount + 'S'
+        if (this.smsCount == 0) {
+          this.smsBtnText = '重新获取'
+          window.clearInterval(i)
+          return
+        }
+      }, 1000)
     }
   },
   watch: {

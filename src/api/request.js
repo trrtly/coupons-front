@@ -14,13 +14,13 @@ function axios(config) {
       .catch(error => {
         Toast(error.data.msg)
 
-        if (error.status === 401) {
-          localStorage.removeItem('token')
-          let platform = JSON.parse(localStorage.getItem('platform'))
-          let redirectUri = encodeURIComponent(window.location.href)
-          let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${platform.appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
-          location.href = url
-        }
+        // if (error.status === 401) {
+        //   localStorage.removeItem('token')
+        //   let platform = JSON.parse(localStorage.getItem('platform'))
+        //   let redirectUri = encodeURIComponent(window.location.href)
+        //   let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${platform.appid}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`
+        //   location.href = url
+        // }
       })
   })
 }
