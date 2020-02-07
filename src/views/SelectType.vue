@@ -131,7 +131,7 @@ export default {
 
       showSmsBox: false,
       smsCode: '',
-      showImgCodeBox: true,
+      showImgCodeBox: false,
       isLogin: false,
       codeImg: '',
       captchaCode: '', // 字段名是后端定义的
@@ -241,7 +241,8 @@ export default {
 
         this.$toast.loading({
           message: '领取中，请稍等...',
-          forbidClick: true
+          forbidClick: true,
+          duration: 0
         })
 
         const loginRes = await this.$api.loginBySms({
@@ -249,6 +250,8 @@ export default {
           smsCode,
           validateToken
         })
+
+        this.$toast.clear()
 
         if (loginRes.code != 200) {
           this.$toast(loginRes.msg)
