@@ -29,7 +29,7 @@ export default {
 
       this.defaultProcess()
 
-      if (new Date().getTime() > localStorage.getItem('expiresAt')) {
+      if (new Date().getTime() / 1000 > localStorage.getItem('expiresAt')) {
         // console.log('2')
         this.noTokenProcess()
       } else {
