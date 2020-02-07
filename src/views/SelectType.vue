@@ -94,7 +94,7 @@
       />
     </div>
 
-    <van-overlay :show="showImgCodeBox">
+    <van-overlay :show="showImgCodeBox" @click="showImgCodeBox = false">
       <div class="wrapper" @click.stop>
         <div class="block">
           <div class="input-box">
@@ -162,7 +162,8 @@ export default {
         return false
       }
 
-      if (!this.loginEle()) {
+      const loginEle = await this.loginEle()
+      if (!loginEle) {
         return false
       }
       const { code, data } = await this.$api.getredPacks({
@@ -199,48 +200,50 @@ export default {
       this.ReceiveType = res.data
     },
 
-    async loginEle() {
-      const that = this
-      if (this.isLogin) {
-        return true
-      }
-      if (this.showSmsBox && !this.smsCode) {
-        this.$toast('请输入短信验证码!')
-        return false
-      }
+    loginEle() {
+      return new Promise(async resolve => {
+        const that = this
+        if (this.isLogin) {
+          resolve(true)
+        }
+        if (this.showSmsBox && !this.smsCode) {
+          this.$toast('请输入短信验证码!')
+          resolve(false)
+        }
 
-      let currentScore = this.ReceiveType[this.currentSort].socre
-      if (this.userInfo.score < currentScore) {
-        this.$dialog
-          .alert({
-            confirmButtonText: '前往充值',
-            showCancelButton: true,
-            message: '您的积分余额不足，快来充值积分吧!'
-          })
-          .then(() => {
-            that.$router.push({ path: '/chongzhiIntegral' })
-          })
-          .catch(() => {})
-        return false
-      }
+        let currentScore = this.ReceiveType[this.currentSort].socre
+        if (this.userInfo.score < currentScore) {
+          this.$dialog
+            .alert({
+              confirmButtonText: '前往充值',
+              showCancelButton: true,
+              message: '您的积分余额不足，快来充值积分吧!'
+            })
+            .then(() => {
+              that.$router.push({ path: '/chongzhiIntegral' })
+            })
+            .catch(() => {})
+          resolve(false)
+        }
 
-      const { inputPhoneValue, smsCode, validateToken } = this
+        const { inputPhoneValue, smsCode, validateToken } = this
 
-      this.$toast.loading({
-        message: '领取中，请稍等...',
-        forbidClick: true
+        this.$toast.loading({
+          message: '领取中，请稍等...',
+          forbidClick: true
+        })
+
+        const loginRes = await this.$api.loginBySms({
+          mobile: inputPhoneValue,
+          smsCode,
+          validateToken
+        })
+
+        if (loginRes.code != 200) {
+          resolve(false)
+        }
+        resolve(true)
       })
-
-      const loginRes = await this.$api.loginBySms({
-        mobile: inputPhoneValue,
-        smsCode,
-        validateToken
-      })
-
-      if (loginRes.code != 200) {
-        return false
-      }
-      return true
     },
 
     async checkUserMobile() {
