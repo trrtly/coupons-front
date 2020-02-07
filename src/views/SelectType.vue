@@ -62,7 +62,7 @@
       <div class="mb-10">
         <van-icon name="close" size="40" color="#f56c6c" />
       </div>
-      很抱歉，领取失败!
+      {{ failMsg }}
     </van-popup>
 
     <div class="success_layer" v-if="showSueccess">
@@ -140,6 +140,7 @@ export default {
       smsCount: 60,
       smsBtnText: '获取验证码',
       timer: null,
+      failMsg: '很抱歉，领取失败!',
       href: ''
     }
   },
@@ -168,12 +169,15 @@ export default {
       if (!loginEle) {
         return false
       }
-      const { code, data } = await this.$api.getredPacks({
+      const { code, data, msg } = await this.$api.getredPacks({
         id: this.ReceiveType[this.currentSort].id,
         mobile: this.inputPhoneValue
       })
-
+      
       if (code !== 200) {
+        if (msg != '') {
+          this.failMsg = msg
+        }
         this.showFail = true
       } else {
         this.redPacksRes = data
@@ -217,7 +221,7 @@ export default {
           resolve(true)
           return
         }
-        if (this.showSmsBox && !this.smsCode) {
+        if (!this.smsCode) {
           this.$toast('请输入短信验证码!')
           resolve(false)
           return
