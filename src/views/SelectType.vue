@@ -180,7 +180,8 @@ export default {
           let num = Math.floor(Math.random() * (platform.cps.length + 1))
           this.href = platform.cps[num]
         } else {
-          this.href = data.url
+          location.href = data.url
+          return
         }
         this.showSueccess = true
 
