@@ -40,7 +40,7 @@
           v-model="smsCode"
         />
         <button class="btn btn-send-code" @click="getSmsCode">
-          获取验证码
+          {{ smsBtnText }}
         </button>
       </div>
       <button type="button" @click="onSubmit">
@@ -95,7 +95,7 @@
     </div>
 
     <van-overlay :show="showImgCodeBox">
-      <div class="wrapper" @click.stop>
+      <div class="wrapper">
         <div class="block">
           <div class="input-box">
             <input
@@ -138,6 +138,8 @@ export default {
       captchaHash: '',
       validateToken: '',
       count: 7,
+      smsCount: 60,
+      smsBtnText: '获取验证码',
       href: ''
     }
   },
@@ -185,10 +187,12 @@ export default {
         }
         this.showSueccess = true
 
-        setInterval(() => {
+        var i = setInterval(() => {
           this.count--
           if (this.count == 0) {
             location.href = this.href
+            window.clearInterval(i)
+            return
           }
         }, 1000)
       }
@@ -300,6 +304,10 @@ export default {
       const res = await this.$api.getCaptcha({
         mobile: this.inputPhoneValue
       })
+      if (res.code != 200) {
+        this.$toast(res.msg)
+        return
+      }
       this.captchaHash = res.data.captchaHash
       this.codeImg = 'data:image/jpg;base64,' + res.data.captchaImage
 
@@ -308,16 +316,36 @@ export default {
 
     async sendSms() {
       const { inputPhoneValue, captchaHash, captchaCode } = this
+      if (captchaCode == '') {
+        this.$toast('请输入图形验证码')
+        return
+      }
       const res = await this.$api.sendSms({
         mobile: inputPhoneValue,
         captchaHash,
         captchaCode
       })
+      if (res.code != 200) {
+        this.captchaCode = ''
+        this.getImgCode()
+        this.$toast(res.msg)
+        return
+      }
 
       this.$toast('短信验证码发送成功！请注意查收')
       this.canSubmit = true
       this.validateToken = res.data.validateToken
       this.showImgCodeBox = false
+      this.smsCount = 60
+      var i = setInterval(() => {
+          this.smsCount--
+          this.smsBtnText = this.smsCount + 'S'
+          if (this.smsCount == 0) {
+            this.smsBtnText = '重新获取'
+            window.clearInterval(i)
+            return
+          }
+        }, 1000)
     }
   },
   watch: {
