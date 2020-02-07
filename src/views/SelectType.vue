@@ -79,7 +79,7 @@
             </div>
             <div class="rigth_size">
               <p>{{ item.title }}</p>
-              <span>{{ item.threshold }}</span>
+              <span>满{{ item.threshold }}可用</span>
             </div>
           </li>
         </ul>
@@ -137,7 +137,7 @@ export default {
       captchaCode: '', // 字段名是后端定义的
       captchaHash: '',
       validateToken: '',
-      count: 5,
+      count: 7,
       href: ''
     }
   },
