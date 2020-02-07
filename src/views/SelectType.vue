@@ -245,6 +245,7 @@ export default {
         })
 
         if (loginRes.code != 200) {
+          this.$toast(loginRes.msg)
           resolve(false)
           return
         }
