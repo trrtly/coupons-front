@@ -32,7 +32,7 @@
         </li>
       </ul>
     </div>
-    <div class="hengfu">
+    <div class="hengfu" v-if="Announcements[0]">
       <van-swipe vertical loop :autoplay="3000">
         <van-swipe-item
           @click="openTc(index)"
@@ -87,7 +87,7 @@
           <div class="block">
             <h3>公告</h3>
             <img src="@/assets/images/close-btn.png" alt="福利中心" />
-            <p v-html="Announcements[theIndex].content"></p>
+            <p v-html="getContent"></p>
             <button>我知道了</button>
           </div>
         </div>
@@ -135,6 +135,14 @@ export default {
   methods: {
     jumpUrl(e) {
       this.$router.push({ path: '/' + e })
+    },
+    getContent() {
+      let data = this.Announcements[this.theIndex]
+      let content = ''
+      if (data) {
+        content = data.content
+      }
+      return content
     },
 
     copy() {
