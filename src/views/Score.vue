@@ -1,15 +1,19 @@
 <template>
   <div id="Welfare-page">
     <div class="record">
+      <h3>您可以通过以下方式获取积分:</h3>
       <div class="recordList">
         <ul>
           <li>
             <img :src="require('@/assets/images/gouwu-icon.png')" alt="" />
-            <p>签到</p>
+            <p>每日签到</p>
+            <p>每日签到获得随机积分</p>
           </li>
           <li @click="showPoster = true">
             <img :src="require('@/assets/images/yaoqing_img.png')" alt="" />
             <p>邀请好友</p>
+            <p>活动期间，邀请好友可得12积分</p>
+            <p>海报有效期为30天，失效后请重新获取</p>
           </li>
         </ul>
       </div>
@@ -50,8 +54,8 @@ export default {
       justify-content: flex-start;
       flex-wrap: wrap;
       li {
-        width: 43.4vw;
-        height: 33.3vw;
+        width: 87.4vw;
+        height: 40.3vw;
         background: rgba(255, 255, 255, 1);
         margin-right: 3.5vw;
         margin-bottom: 2.8vw;

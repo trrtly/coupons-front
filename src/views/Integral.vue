@@ -5,7 +5,9 @@
         <p>当前积分余额</p>
       </div>
       <h1>{{ userInfo.score }}</h1>
-      <button>充值积分</button>
+      <router-link to="/score">
+      <button>获取积分</button>
+      </router-link>
     </div>
     <div class="record">
       <div class="recordList">
