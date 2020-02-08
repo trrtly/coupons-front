@@ -150,7 +150,7 @@ export default {
 
   mounted() {
     this.Redpacks()
-    this.checkUserMobile()
+    // this.checkUserMobile()
   },
 
   methods: {
@@ -159,9 +159,8 @@ export default {
     },
     async getUserInfo() {
       const res = await this.$api.getUserInfo()
-      if (res.code == 200) {
-        this.userInfo = res.data
-      }
+
+      this.$store.commit('setUserInfo', res.data)
     },
 
     async onSubmit() {
@@ -208,6 +207,7 @@ export default {
         this.showFail = true
         return
       }
+      this.getUserInfo()
       this.redPacksRes = data
 
       if (data.type === 2) {
