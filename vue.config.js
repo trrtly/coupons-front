@@ -10,7 +10,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://pb4bq6eow8rgun5h.xmanfulong.com',
+        target: 'http://localhost:8000',
         changeOrigin: true, // 是否跨域
         ws: true,
         pathRewrite: {

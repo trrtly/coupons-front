@@ -45,10 +45,10 @@
     </div>
     <div class="datalist">
       <ul>
-        <router-link to="chongzhiIntegral">
+        <router-link to="score">
           <li>
             <img src="@/assets/images/jifen_img.png" alt="积分充值" />
-            <p>积分充值</p>
+            <p>获取积分</p>
           </li>
         </router-link>
         <router-link to="InvitationList">
