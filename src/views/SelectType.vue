@@ -127,7 +127,6 @@ export default {
       inputPhoneValue: '',
       canSubmit: false,
       redPacksRes: {},
-
       showSmsBox: false,
       smsCode: '',
       showImgCodeBox: false,
@@ -151,12 +150,18 @@ export default {
 
   mounted() {
     this.Redpacks()
-    // this.checkUserMobile()
+    this.checkUserMobile()
   },
 
   methods: {
     changeBg(i) {
       this.currentSort = i
+    },
+    async getUserInfo() {
+      const res = await this.$api.getUserInfo()
+      if (res.code == 200) {
+        this.userInfo = res.data
+      }
     },
 
     async onSubmit() {
@@ -184,30 +189,42 @@ export default {
       this.$toast.clear()
       
       if (code !== 200) {
+        if (code === 1006) {
+          this.$dialog
+            .alert({
+              confirmButtonText: '获取积分',
+              showCancelButton: true,
+              message: '您的积分余额不足，快去获取积分吧!'
+            })
+            .then(() => {
+              this.$router.push({ path: '/score' })
+            })
+            .catch(() => {})
+            return
+        }
         if (msg != '') {
           this.failMsg = msg
         }
         this.showFail = true
-      } else {
-        this.redPacksRes = data
+        return
+      }
+      this.redPacksRes = data
 
-        if (data.type === 1) {
-          this.href = this.getCpsUrl()
-        } else {
-          location.href = data.url
+      if (data.type === 2) {
+        location.href = data.url
+        return
+      }
+      this.href = this.getCpsUrl()
+      this.showSueccess = true
+
+      this.timer = setInterval(() => {
+        this.count--
+        if (this.count == 0) {
+          window.clearInterval(this.timer)
+          location.href = this.href
           return
         }
-        this.showSueccess = true
-
-        this.timer = setInterval(() => {
-          this.count--
-          if (this.count == 0) {
-            window.clearInterval(this.timer)
-            location.href = this.href
-            return
-          }
-        }, 1000)
-      }
+      }, 1000)
     },
 
     closeSuccessLayer() {
@@ -244,12 +261,12 @@ export default {
         if (this.userInfo.score < currentScore) {
           this.$dialog
             .alert({
-              confirmButtonText: '前往充值',
+              confirmButtonText: '获取积分',
               showCancelButton: true,
-              message: '您的积分余额不足，快来充值积分吧!'
+              message: '您的积分余额不足，快去获取积分吧!'
             })
             .then(() => {
-              that.$router.push({ path: '/chongzhiIntegral' })
+              that.$router.push({ path: '/score' })
             })
             .catch(() => {})
           resolve(false)
@@ -292,12 +309,13 @@ export default {
         if (res.code == 200 && res.data.isLogin) {
           this.canSubmit = true
           this.isLogin = true
-        } else {
-          this.showSmsBox = true
+          this.showSmsBox = false
+          return
         }
-      } else {
         this.showSmsBox = true
+        return
       }
+      this.showSmsBox = true
     },
 
     async mobileInput() {
