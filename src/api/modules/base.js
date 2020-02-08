@@ -88,5 +88,11 @@ export default [
     name: 'getPoster',
     path: '/api/v1/user/poster',
     method: 'get'
+  },
+  {
+    //签到
+    name: 'signin',
+    path: '/api/v1/user/signin',
+    method: 'post'
   }
 ]

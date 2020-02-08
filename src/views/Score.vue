@@ -4,7 +4,7 @@
       <h3>您可以通过以下方式获取积分:</h3>
       <div class="recordList">
         <ul>
-          <li>
+          <li @click="signin">
             <img :src="require('@/assets/images/gouwu-icon.png')" alt="" />
             <p>每日签到</p>
             <p>每日签到获得随机积分</p>
@@ -35,9 +35,21 @@ export default {
   },
   mounted() {},
   methods: {
-    jumpUrl(e) {
-      this.$router.push({ path: '/' + e })
-    }
+    async signin() {
+      const res = await this.$api.signin()
+      if (res.code == 200) {
+        this.$dialog
+            .alert({
+              confirmButtonText: '我知道了',
+              showCancelButton: true,
+              message: '签到成功,本次获得积分:' + res.data.score
+            })
+            .catch(() => {})
+            return
+      }
+      this.$toast(res.msg)
+      return
+    },
   }
 }
 </script>
