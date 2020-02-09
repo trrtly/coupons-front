@@ -57,12 +57,12 @@
             <p>好友列表</p>
           </li>
         </router-link>
-        <router-link to="InvitationList">
+        <!-- <router-link to="InvitationList">
           <li>
             <img src="@/assets/images/wenti_img.png" alt="常见问题" />
             <p>常见问题</p>
           </li>
-        </router-link>
+        </router-link> -->
         <a href="javascript: void(0)">
           <li @click="showPoster = true">
             <img src="@/assets/images/yaoqing_img.png" alt="邀请好友" />
@@ -75,18 +75,24 @@
             <p>联系客服</p>
           </li>
         </a>
-        <router-link to="/WelfareCentre">
+        <a v-if="platform.mall" :href="platform.mall">
           <li>
-            <img src="@/assets/images/liwu_img.png" alt="福利中心" />
-            <p>福利中心</p>
+            <img src="@/assets/images/gouwu-icon.png" />
+            <p>名牌①折起</p>
           </li>
-        </router-link>
+        </a>
+        <a v-if="platform.move" :href="platform.move">
+          <li>
+            <img src="@/assets/images/jifentubiao-icon.png" />
+            <p>特惠电影票</p>
+          </li>
+        </a>
       </ul>
       <van-overlay :show="show" @click="show = false">
         <div class="wrapper">
           <div class="block">
             <h3>公告</h3>
-            <img src="@/assets/images/close-btn.png" alt="福利中心" />
+            <img src="@/assets/images/close-btn.png" />
             <p v-html="getContent"></p>
             <button>我知道了</button>
           </div>
