@@ -150,7 +150,7 @@ export default {
 
   mounted() {
     this.Redpacks()
-    // this.checkUserMobile()
+    this.getUserInfo()
   },
 
   methods: {
@@ -722,13 +722,6 @@ export default {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
   }
-
-  // .wrapper {
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   height: 100%;
-  // }
 
   .block {
     position: absolute;

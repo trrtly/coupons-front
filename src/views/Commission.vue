@@ -117,10 +117,12 @@ export default {
       withdrawShow: false
     }
   },
+
   mounted() {
     document.addEventListener('scroll', this.scrollMoreData, false)
     this.getRecords()
   },
+
   methods: {
     jumpUrl(e) {
       this.$router.push({ path: '/' + e })
