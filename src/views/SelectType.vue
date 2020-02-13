@@ -150,7 +150,7 @@ export default {
 
   mounted() {
     this.Redpacks()
-    this.getUserInfo()
+    this.userInfo.mobile && this.checkUserMobile()
   },
 
   methods: {
