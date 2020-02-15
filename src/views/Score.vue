@@ -45,10 +45,16 @@ export default {
               message: '签到成功,本次获得积分:' + res.data.score
             })
             .catch(() => {})
+            this.getUserInfo()
             return
       }
       this.$toast(res.msg)
       return
+    },
+    async getUserInfo() {
+      const res = await this.$api.getUserInfo()
+
+      this.$store.commit('setUserInfo', res.data)
     },
   }
 }
