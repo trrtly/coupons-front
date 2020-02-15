@@ -65,7 +65,7 @@
       {{ failMsg }}
     </van-popup>
 
-    <div class="success_layer" v-if="showSueccess">
+    <div class="success_layer" v-if="showSuccess">
       <div class="bg"></div>
       <div class="content_wrap">
         <p class="title">{{ redPacksRes.title }}</p>
@@ -120,14 +120,13 @@ export default {
   data() {
     return {
       showFail: false,
-      showSueccess: false,
+      showSuccess: false,
       ReceiveType: [],
       currentSort: 0,
       id: '',
       inputPhoneValue: '',
-      canSubmit: false,
       redPacksRes: {},
-      showSmsBox: false,
+      showSmsBox: true,
       smsCode: '',
       showImgCodeBox: false,
       isLogin: false,
@@ -150,7 +149,7 @@ export default {
 
   mounted() {
     this.Redpacks()
-    this.userInfo.mobile && this.checkUserMobile()
+    this.checkUserMobile()
   },
 
   methods: {
@@ -188,6 +187,7 @@ export default {
       this.$toast.clear()
       
       if (code !== 200) {
+        // 积分不足
         if (code === 1006) {
           this.$dialog
             .alert({
@@ -201,21 +201,22 @@ export default {
             .catch(() => {})
             return
         }
-        if (msg != '') {
-          this.failMsg = msg
+        // 登录已过期
+        if (code === 1009) {
+          this.setNoLogin()
         }
-        this.showFail = true
+        this.showFailMsg(msg)
         return
       }
       this.getUserInfo()
       this.redPacksRes = data
-
+      // url 类型的红包直接跳转
       if (data.type === 2) {
         location.href = data.url
         return
       }
       this.href = this.getCpsUrl()
-      this.showSueccess = true
+      this.showSuccess = true
 
       this.timer = setInterval(() => {
         this.count--
@@ -229,7 +230,7 @@ export default {
 
     closeSuccessLayer() {
       window.clearInterval(this.timer)
-      this.showSueccess = false
+      this.showSuccess = false
     },
 
     async Redpacks() {
@@ -243,32 +244,25 @@ export default {
       let index = Math.floor((Math.random()*platform.cps.length));
       return platform.cps[index]
     },
+    showFailMsg(msg) {
+      if (msg != '') {
+        this.failMsg = msg
+      }
+      this.showFail = true
+    },
 
     loginEle() {
       return new Promise(async resolve => {
-        const that = this
         if (this.isLogin) {
           resolve(true)
           return
         }
-        if (!this.smsCode) {
-          this.$toast('请输入短信验证码!')
-          resolve(false)
+        if (this.validateToken === '') {
+          this.showFailMsg('请先点击获取验证码按钮,获取短信验证码')
           return
         }
-
-        let currentScore = this.ReceiveType[this.currentSort].socre
-        if (this.userInfo.score < currentScore) {
-          this.$dialog
-            .alert({
-              confirmButtonText: '获取积分',
-              showCancelButton: true,
-              message: '您的积分余额不足，快去获取积分吧!'
-            })
-            .then(() => {
-              that.$router.push({ path: '/score' })
-            })
-            .catch(() => {})
+        if (this.smsCode == '') {
+          this.$toast('请输入短信验证码!')
           resolve(false)
           return
         }
@@ -291,31 +285,28 @@ export default {
 
         if (loginRes.code != 200) {
           this.$toast(loginRes.msg)
+          this.setNoLogin()
           resolve(false)
           return
         }
-        this.canSubmit = true
-        this.isLogin = true
-        this.showSmsBox = false
+        this.setLogin()
         resolve(true)
       })
     },
 
     async checkUserMobile() {
       const mobile = this.userInfo.mobile
-      if (mobile) {
-        this.inputPhoneValue = mobile
-        const res = await this.$api.getUserCurrent({ mobile })
-        if (res.code == 200 && res.data.isLogin) {
-          this.canSubmit = true
-          this.isLogin = true
-          this.showSmsBox = false
-          return
-        }
-        this.showSmsBox = true
+      if (!mobile) {
         return
       }
-      this.showSmsBox = true
+      this.inputPhoneValue = mobile
+      const res = await this.$api.getUserCurrent({ mobile })
+      if (res.code == 200 && res.data.isLogin) {
+        this.setLogin()
+        return
+      }
+      this.setNoLogin()
+      return
     },
 
     async mobileInput() {
@@ -324,13 +315,10 @@ export default {
       if (reg.test(mobile)) {
         const res = await this.$api.getUserCurrent({ mobile })
         if (res.code == 200 && res.data.isLogin) {
-          this.canSubmit = true
-          this.showSmsBox = false
-          this.isLogin = true
-        } else {
-          this.showSmsBox = true
-          this.isLogin = false
+          this.setLogin()
+          return
         }
+        this.setNoLogin()
       }
 
       let reg2 = new RegExp('^[0-9]*$')
@@ -355,6 +343,14 @@ export default {
           this.showImgCodeBox = true
         })
       })
+    },
+    setNoLogin() {
+      this.isLogin = false
+      this.showSmsBox = true
+    },
+    setLogin() {
+      this.isLogin = true
+      this.showSmsBox = false
     },
 
     async getImgCode(cb) {
@@ -392,7 +388,6 @@ export default {
       }
 
       this.$toast('短信验证码发送成功！请注意查收')
-      this.canSubmit = true
       this.validateToken = res.data.validateToken
       this.showImgCodeBox = false
       this.smsCount = 60
