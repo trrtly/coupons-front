@@ -1,5 +1,4 @@
-export default [
-  {
+export default [{
     //获取平台基础信息
     name: 'getPlatformInfo',
     path: '/api/v1/platform',
@@ -93,6 +92,18 @@ export default [
     //签到
     name: 'signin',
     path: '/api/v1/user/signin',
+    method: 'post'
+  },
+  {
+    //英语四级查询
+    name: 'cet4ValidateImg',
+    path: '/api/v1/cet4/validateImg',
+    method: 'get'
+  },
+  {
+    //英语四级查询
+    name: 'cet4Find',
+    path: '/api/v1/cet4/find',
     method: 'post'
   }
 ]

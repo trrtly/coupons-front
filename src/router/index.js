@@ -10,11 +10,11 @@ import RechargeRecord from '../views/RechargeRecord'
 import InvitationList from '../views/InvitationList'
 import WelfareCentre from '../views/WelfareCentre'
 import Score from '../views/Score'
+import Cet4 from '../views/Cet4'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     redirect: '/home'
   },
@@ -97,6 +97,14 @@ const routes = [
       title: '获取积分'
     },
     component: Score
+  },
+  {
+    path: '/cet4',
+    name: 'cet4',
+    meta: {
+      title: '英语四六级准考证号码找回'
+    },
+    component: Cet4
   }
 ]
 
