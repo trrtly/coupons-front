@@ -156,9 +156,6 @@ export default {
       this.showIDType = false;
     },
     async onSubmit() {
-      // this.result = [{"SubjectName":"英语四级笔试","TestTicket":"358010192102821"}];
-      // this.showResult = true
-      // return
       const res = await this.$api.cet4Find({
         provinceCode: this.provinceCode,
         IDTypeCode: this.IDTypeCode,
@@ -173,7 +170,6 @@ export default {
       }
       this.result = res.data
       this.showResult = true
-      console.log(this.result)
     }
   }
 }
