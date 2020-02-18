@@ -12,7 +12,7 @@
           <li @click="showPoster = true">
             <img :src="require('@/assets/images/yaoqing_img.png')" alt="" />
             <p>邀请好友</p>
-            <p>活动期间，邀请好友可得12积分</p>
+            <p>活动期间，每邀请一个好友可得12积分</p>
             <p>海报有效期为30天，失效后请重新获取</p>
           </li>
         </ul>
