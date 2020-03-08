@@ -126,7 +126,7 @@ export default {
       id: '',
       inputPhoneValue: '',
       redPacksRes: {},
-      showSmsBox: true,
+      showSmsBox: false,
       smsCode: '',
       showImgCodeBox: false,
       isLogin: false,
@@ -168,10 +168,10 @@ export default {
         return false
       }
 
-      const loginEle = await this.loginEle()
-      if (!loginEle) {
-        return false
-      }
+      // const loginEle = await this.loginEle()
+      // if (!loginEle) {
+      //   return false
+      // }
 
       this.$toast.loading({
           message: '领取中，请稍等...',
@@ -300,26 +300,26 @@ export default {
         return
       }
       this.inputPhoneValue = mobile
-      const res = await this.$api.getUserCurrent({ mobile })
-      if (res.code == 200 && res.data.isLogin) {
-        this.setLogin()
-        return
-      }
-      this.setNoLogin()
+      // const res = await this.$api.getUserCurrent({ mobile })
+      // if (res.code == 200 && res.data.isLogin) {
+      //   this.setLogin()
+      //   return
+      // }
+      // this.setNoLogin()
       return
     },
 
     async mobileInput() {
-      let reg = /^1[3|4|5|7|8|9][0-9]{9}$/
+      // let reg = /^1[3|4|5|7|8|9][0-9]{9}$/
       const mobile = this.inputPhoneValue
-      if (reg.test(mobile)) {
-        const res = await this.$api.getUserCurrent({ mobile })
-        if (res.code == 200 && res.data.isLogin) {
-          this.setLogin()
-          return
-        }
-        this.setNoLogin()
-      }
+      // if (reg.test(mobile)) {
+      //   const res = await this.$api.getUserCurrent({ mobile })
+      //   if (res.code == 200 && res.data.isLogin) {
+      //     this.setLogin()
+      //     return
+      //   }
+      //   this.setNoLogin()
+      // }
 
       let reg2 = new RegExp('^[0-9]*$')
       if (!reg2.test(mobile[mobile.length - 1])) {
