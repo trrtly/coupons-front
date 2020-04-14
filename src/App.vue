@@ -18,6 +18,7 @@ export default {
 
   methods: {
     async noTokenProcess() {
+      this.$toast('noTokenProcess')
       localStorage.removeItem('token')
       const res = await this.$api.getToken({
         code: this.$route.query.code
