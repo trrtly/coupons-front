@@ -126,7 +126,7 @@ export default {
       id: '',
       inputPhoneValue: '',
       redPacksRes: {},
-      showSmsBox: true,
+      showSmsBox: false,
       smsCode: '',
       showImgCodeBox: false,
       isLogin: false,
