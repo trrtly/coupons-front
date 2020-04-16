@@ -84,7 +84,9 @@
           </li>
         </ul>
 
-        <button><a :href="href">再领取一个免费红包（{{ count }}S后跳转）</a></button>
+        <button>
+          <a :href="href">再领取一个免费红包（{{ count }}S后跳转）</a>
+        </button>
       </div>
 
       <img
@@ -174,10 +176,10 @@ export default {
       }
 
       this.$toast.loading({
-          message: '领取中，请稍等...',
-          forbidClick: true,
-          duration: 0
-        })
+        message: '领取中，请稍等...',
+        forbidClick: true,
+        duration: 0
+      })
 
       const { code, data, msg } = await this.$api.getredPacks({
         id: this.ReceiveType[this.currentSort].id,
@@ -185,7 +187,7 @@ export default {
       })
 
       this.$toast.clear()
-      
+
       if (code !== 200) {
         // 积分不足
         if (code === 1006) {
@@ -199,7 +201,7 @@ export default {
               this.$router.push({ path: '/score' })
             })
             .catch(() => {})
-            return
+          return
         }
         // 登录已过期
         if (code === 1009) {
@@ -235,13 +237,13 @@ export default {
 
     async Redpacks() {
       const res = await this.$api.redPacks({})
-      this.id = res.data[0].id
+      res.data.length && (this.id = res.data[0].id)
       this.ReceiveType = res.data
     },
 
     getCpsUrl() {
       let platform = JSON.parse(localStorage.getItem('platform'))
-      let index = Math.floor((Math.random()*platform.cps.length));
+      let index = Math.floor(Math.random() * platform.cps.length)
       return platform.cps[index]
     },
     showFailMsg(msg) {
