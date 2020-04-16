@@ -2,6 +2,7 @@ import axios from 'axios'
 
 // 请求的默认配置
 const service = axios.create({
+  baseURL: 'https://wmzs.xmanfulong.com',
   timeout: 60 * 1000
 })
 // 添加请求拦截器
