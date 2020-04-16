@@ -53,6 +53,7 @@
 import BottomFixed from './BottomFixed'
 import SelectType from './SelectType'
 import { mapGetters } from 'vuex'
+import tt from '@/utils/index.js'
 
 export default {
   components: { BottomFixed, SelectType },
@@ -71,6 +72,7 @@ export default {
   mounted() {
     this.getBanners()
     this.getRedpackLogs()
+    tt.miniProgram.postMessage(true)
   },
 
   methods: {
