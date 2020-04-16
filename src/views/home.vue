@@ -80,7 +80,6 @@ export default {
     },
     async getRedpackLogs() {
       const res = await this.$api.redpackLogs({})
-      console.log('redpack:', res)
       this.lunboList = res.data
     }
   }
