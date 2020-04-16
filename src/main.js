@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import api from './api'
+import { Toast } from 'vant'
 import Vant from 'vant'
 
 import './assets/less/index.less'
@@ -23,5 +24,11 @@ async function initail() {
 Vue.prototype.$api = api
 Vue.config.productionTip = false
 Vue.use(Vant)
+
+Toast.loading({
+  message: '初始化中...',
+  duration: 0,
+  forbidClick: true
+})
 
 initail()
