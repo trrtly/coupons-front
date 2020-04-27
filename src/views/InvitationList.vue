@@ -16,7 +16,7 @@
       </p>
     </div>
 
-    <template v-if="recordList.length">
+    <template v-if="recordList">
       <div class="hasinvitation">
         <div class="invitation">
           <div class="invitation_title">
@@ -29,7 +29,7 @@
                   <img :src="item.headimgurl" alt="" />
                   <div>
                     <p>{{ item.nickname }}</p>
-                    <p>{{ item.createdAt }}</p>
+                    <p>{{ timestampToTime(item.createdAt * 1000) }}</p>
                   </div>
                 </div>
                 <div class="clear"></div>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { timestampToTime } from '../assets/untils/index'
 import { mapGetters } from 'vuex'
 import posterPopup from '@/components/poster.vue'
 
@@ -93,16 +94,20 @@ export default {
     closePopup() {
       this.show = false
     },
+    // // 时间戳转换成时间
+    timestampToTime(time) {
+      return timestampToTime(time)
+    },
 
     async getList() {
-      let { list, totalInviteNum } = await this.$api.getInviteRecords({
+      const res = await this.$api.getInviteRecords({
         page: this.page,
         limit: this.limit
       })
 
-      this.recordList = list || []
+      this.recordList = res.data.list
       this.page = this.page + 1
-      this.total = Math.ceil(totalInviteNum / this.limit)
+      this.total = Math.ceil(res.data.totalInviteNum / this.limit)
     }
   }
 }
