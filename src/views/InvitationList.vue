@@ -68,7 +68,7 @@ export default {
     return {
       show: false,
       page: 1,
-      limit: 20,
+      limit: 100,
       total: 0,
       recordList: []
     }
