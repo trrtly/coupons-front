@@ -8,6 +8,7 @@ import commissionRules from '../views/CommissionRules'
 import chongzhiIntegral from '../views/chongzhiIntegral'
 import RechargeRecord from '../views/RechargeRecord'
 import InvitationList from '../views/InvitationList'
+import InvitationDetail from '../views/InvitationDetail'
 import WelfareCentre from '../views/WelfareCentre'
 import Score from '../views/Score'
 import Cet4 from '../views/Cet4'
@@ -81,6 +82,14 @@ const routes = [{
       title: '邀请列表'
     },
     component: InvitationList
+  },
+  {
+    path: '/invitationDetail',
+    name: 'invitationDetail',
+    meta: {
+      title: '邀请列表明细'
+    },
+    component: InvitationDetail
   },
   {
     path: '/WelfareCentre',

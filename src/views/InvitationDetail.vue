@@ -6,17 +6,13 @@
       </div>
       <div class="username">
         <h4>{{ userInfo.nickname }}</h4>
-        <p id="userid">UID:{{ userInfo.id }}</p>
       </div>
     </div>
     <div class="henglan_title">
       <p>
-        <span>邀请数:{{ totalInviteNum }}</span>，
-        每邀请一位好友关注，你的
-        <span>积分+12</span>
+        <span>TA的邀请数:{{ totalInviteNum }}</span>
       </p>
     </div>
-
     <template v-if="recordList">
       <div class="hasinvitation">
         <div class="invitation">
@@ -34,9 +30,6 @@
                     <p>{{ timestampToTime(item.createdAt * 1000) }}</p>
                   </div>
                 </div>
-                <div class="recordrt">
-                  <span><router-link :to="{path: '/invitationDetail',query:{id: item.id } }">查看TA的邀请</router-link></span>
-                </div>
                 <div class="clear"></div>
               </li>
             </ul>
@@ -45,15 +38,12 @@
           </div>
         </div>
       </div>
+      
     </template>
 
     <div class="noinvitation" v-else>
       <img src="@/assets/images/noinvitation-img.png" alt="0元购" />
-      <p>您还没有任何邀请</p>
-    </div>
-
-    <div class="invitationList">
-      <button @click="openPopup">马上邀请</button>
+      <p>TA还没有任何邀请</p>
     </div>
 
     <posterPopup v-if="show" @close="closePopup" />
@@ -63,10 +53,8 @@
 <script>
 import { timestampToTime } from '../assets/untils/index'
 import { mapGetters } from 'vuex'
-import posterPopup from '@/components/poster.vue'
 
 export default {
-  components: { posterPopup },
   data() {
     return {
       show: false,
@@ -74,7 +62,8 @@ export default {
       limit: 20,
       total: 0,
       totalInviteNum: 0,
-      recordList: []
+      recordList: [],
+      userInfo: []
     }
   },
 
@@ -98,16 +87,19 @@ export default {
     closePopup() {
       this.show = false
     },
-    // // 时间戳转换成时间
+    // 时间戳转换成时间
     timestampToTime(time) {
       return timestampToTime(time)
     },
-    async getList() {
-      const res = await this.$api.getInviteRecords({
-        page: this.page,
-        limit: this.limit
-      })
 
+    async getList() {
+      const res = await this.$api.getInviteRecordsDetail({
+        page: this.page,
+        limit: this.limit,
+        id: this.$router.app._route.query.id
+      })
+      
+      this.userInfo = res.data.user
       this.recordList.push(...res.data.list)
       this.page = this.page + 1
       this.totalInviteNum = res.data.totalInviteNum

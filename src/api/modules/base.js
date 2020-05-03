@@ -83,6 +83,12 @@ export default [{
     method: 'get'
   },
   {
+    //获取邀请好友列表明细
+    name: 'getInviteRecordsDetail',
+    path: '/api/v1/invite/records/detail',
+    method: 'get'
+  },
+  {
     //获取邀请海报
     name: 'getPoster',
     path: '/api/v1/user/poster',
